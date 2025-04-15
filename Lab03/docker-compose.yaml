@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  backend:
+    image: node:14
+    container_name: app_backend
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules  # Esto evita sobrescribir node_modules
+    working_dir: /app
+    environment:
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=appdb
+    networks:
+      - app_network
+    command: sh -c "npm install && npm start"
+
+  db:
+    image: postgres:13
+    container_name: app_db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=appdb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app_network
+
+volumes:
+  postgres_data:
+
+networks:
+  app_network:
+    driver: bridge
