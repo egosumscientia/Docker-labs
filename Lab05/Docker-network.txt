@@ -1,0 +1,128 @@
+pauloenrique@pauloenrique-Latitude-E7450:~$ cd Downloads/
+pauloenrique@pauloenrique-Latitude-E7450:~/Downloads$ ls
+'06 Certificados Estudios - Acta CESDE_1.pdf'  'Matrícula Profesional 1.jpg'
+'Acta Universidad.jpg'                         'Matrícula Profesional 2.jpg'
+pauloenrique@pauloenrique-Latitude-E7450:~/Downloads$ cd ..
+pauloenrique@pauloenrique-Latitude-E7450:~$ cd Documents/
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents$ ls
+Development  Freelancer  Personal
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents$ cd Development/
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development$ ls 
+'00 Guides'    JS-projects     NodeJS-projects
+'01 Misc'      Labs            Python-projects
+ Docker-labs   makeAutomatic   Terraform-projects
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development$ cd Docker-labs/
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs$ ls
+Lab01  Lab02  Lab03  Lab04
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs$ mkdir Lab05
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs$ cd Lab05
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab05$ ls
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab05$ docker network ls
+NETWORK ID     NAME      DRIVER    SCOPE
+673c484a2f64   bridge    bridge    local
+4ea3b2fcbebc   host      host      local
+ec7824d1d56a   none      null      local
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab05$ docker network create net01
+284f958b8a870c372d3a4d20a4ddbd565dfeb710ae98b0b91d5593d6f984f5ad
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab05$ docker network ls
+NETWORK ID     NAME      DRIVER    SCOPE
+2fbb16be247e   bridge    bridge    local
+4ea3b2fcbebc   host      host      local
+284f958b8a87   net01     bridge    local
+ec7824d1d56a   none      null      local
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab05$ docker run -dit --name cont1 --network net01 alpine sh
+docker run -dit --name cont2 --network net01 alpine sh
+83d2f2c4dd1ce3d06a7c46b1588e87fadc85a90f0688ca3c34baa59d445440cd
+fa374be8e833840edec8e938a3a42d6829de0e06807203014d0bcf68cc69076b
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab05$ docker network inspect net01 
+[
+    {
+        "Name": "net01",
+        "Id": "284f958b8a870c372d3a4d20a4ddbd565dfeb710ae98b0b91d5593d6f984f5ad",
+        "Created": "2025-04-16T20:40:57.827317081Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv4": true,
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": {},
+            "Config": [
+                {
+                    "Subnet": "172.18.0.0/16",
+                    "Gateway": "172.18.0.1"
+                }
+            ]
+        },
+        "Internal": false,
+        "Attachable": false,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": {
+            "83d2f2c4dd1ce3d06a7c46b1588e87fadc85a90f0688ca3c34baa59d445440cd": {
+                "Name": "cont1",
+                "EndpointID": "bff2bc4b7d04cb050ae2024a7fdd5dc8897bbb42e7daa12ad15359359f04068f",
+                "MacAddress": "36:3e:2e:0e:1f:70",
+                "IPv4Address": "172.18.0.2/16",
+                "IPv6Address": ""
+            },
+            "fa374be8e833840edec8e938a3a42d6829de0e06807203014d0bcf68cc69076b": {
+                "Name": "cont2",
+                "EndpointID": "dc0a4f13ae0c832548a8861f50cbfc65f5cc1eb67e67d25945b2d09250d86bce",
+                "MacAddress": "aa:e9:23:68:b3:60",
+                "IPv4Address": "172.18.0.3/16",
+                "IPv6Address": ""
+            }
+        },
+        "Options": {},
+        "Labels": {}
+    }
+]
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab05$ docker exec -it cont1 sh
+/ # ping cont2
+PING cont2 (172.18.0.3): 56 data bytes
+64 bytes from 172.18.0.3: seq=0 ttl=64 time=0.179 ms
+64 bytes from 172.18.0.3: seq=1 ttl=64 time=0.071 ms
+64 bytes from 172.18.0.3: seq=2 ttl=64 time=0.102 ms
+64 bytes from 172.18.0.3: seq=3 ttl=64 time=0.070 ms
+64 bytes from 172.18.0.3: seq=4 ttl=64 time=0.095 ms
+64 bytes from 172.18.0.3: seq=5 ttl=64 time=0.076 ms
+64 bytes from 172.18.0.3: seq=6 ttl=64 time=0.268 ms
+^C
+--- cont2 ping statistics ---
+7 packets transmitted, 7 packets received, 0% packet loss
+round-trip min/avg/max = 0.070/0.123/0.268 ms
+/ # exit
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab05$ docker exec -it cont2 sh
+/ # ping cont1
+PING cont1 (172.18.0.2): 56 data bytes
+64 bytes from 172.18.0.2: seq=0 ttl=64 time=0.094 ms
+64 bytes from 172.18.0.2: seq=1 ttl=64 time=0.074 ms
+64 bytes from 172.18.0.2: seq=2 ttl=64 time=0.094 ms
+64 bytes from 172.18.0.2: seq=3 ttl=64 time=0.080 ms
+64 bytes from 172.18.0.2: seq=4 ttl=64 time=0.074 ms
+64 bytes from 172.18.0.2: seq=5 ttl=64 time=0.157 ms
+^C
+--- cont1 ping statistics ---
+6 packets transmitted, 6 packets received, 0% packet loss
+round-trip min/avg/max = 0.074/0.095/0.157 ms
+/ # exit
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab05$ docker network rm net01
+Error response from daemon: error while removing network: network net01 id 284f958b8a870c372d3a4d20a4ddbd565dfeb710ae98b0b91d5593d6f984f5ad has active endpoints
+exit status 1
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab05$ docker network disconnect net01 cont1
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab05$ docker network disconnect net01 cont2
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab05$ docker network rm net01
+net01
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab05$ docker network prune
+WARNING! This will remove all custom networks not used by at least one container.
+Are you sure you want to continue? [y/N] y
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab05$ docker network ls
+NETWORK ID     NAME      DRIVER    SCOPE
+2fbb16be247e   bridge    bridge    local
+4ea3b2fcbebc   host      host      local
+ec7824d1d56a   none      null      local
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab05$ 

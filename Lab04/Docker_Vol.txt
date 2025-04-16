@@ -1,0 +1,89 @@
+pauloenrique@pauloenrique-Latitude-E7450:~$ docker volume create myVolume01
+myVolume01
+pauloenrique@pauloenrique-Latitude-E7450:~$ docker volume ls
+DRIVER    VOLUME NAME
+local     myVolume01
+pauloenrique@pauloenrique-Latitude-E7450:~$ docker volume inspect myVolume01 
+[
+    {
+        "CreatedAt": "2025-04-15T23:49:38Z",
+        "Driver": "local",
+        "Labels": null,
+        "Mountpoint": "/var/lib/docker/volumes/myVolume01/_data",
+        "Name": "myVolume01",
+        "Options": null,
+        "Scope": "local"
+    }
+]
+pauloenrique@pauloenrique-Latitude-E7450:~$ docker run -d --name container_with_volume -v myVolume01:/data alpine tail -f /dev/null
+Unable to find image 'alpine:latest' locally
+latest: Pulling from library/alpine
+f18232174bc9: Pull complete 
+Digest: sha256:a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e74aff4511df3ef88c
+Status: Downloaded newer image for alpine:latest
+59b83874f4efce27d14c94b4ffc444a0a323b955ac7b3754a81c040091d8d588
+pauloenrique@pauloenrique-Latitude-E7450:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND               CREATED          STATUS          PORTS     NAMES
+59b83874f4ef   alpine    "tail -f /dev/null"   16 seconds ago   Up 15 seconds             container_with_volume
+pauloenrique@pauloenrique-Latitude-E7450:~$ docker exec -it 59b83874f4ef sh
+/ # cd /data
+/data # echo "Hello Docker!" > prueba.txt
+/data # cat prueba.txt
+Hello Docker!
+/data # exit
+pauloenrique@pauloenrique-Latitude-E7450:~$ docker stop 59b83874f4ef
+59b83874f4ef
+pauloenrique@pauloenrique-Latitude-E7450:~$ docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+pauloenrique@pauloenrique-Latitude-E7450:~$ docker ps -a
+CONTAINER ID   IMAGE     COMMAND               CREATED              STATUS                       PORTS     NAMES
+59b83874f4ef   alpine    "tail -f /dev/null"   About a minute ago   Exited (137) 5 seconds ago             container_with_volume
+pauloenrique@pauloenrique-Latitude-E7450:~$ docker run -v myVolume01:/data alpine cat /data/prueba.txt
+Hello Docker!
+pauloenrique@pauloenrique-Latitude-E7450:~$ cd Documents/
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents$ ls
+Development  Freelancer  Personal
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents$ cd Development/
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development$ ls
+'00 Guides'  '01 Misc'   Docker-labs   JS-projects   makeAutomatic   NodeJS-projects   Python-projects   Terraform-projects
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development$ cd Docker-labs/
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs$ ls
+Lab01  Lab02  Lab03
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs$ mkdir Lab04
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs$ cd Lab04
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab04$ ls
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab04$ mkdir ~/docker_bind
+echo "Este es un bind mount" > ~/docker_bind/archivo.txt
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab04$ docker run -v ~/docker_bind:/app alpine cat /app/archivo.txt
+Este es un bind mount
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab04$ docker run -v ~/docker_bind:/app alpine sh -c "echo 'Modificado desde Docker' >> /app/archivo.txt"
+cat ~/docker_bind/archivo.txt  # Debe mostrar la línea añadida.
+Este es un bind mount
+Modificado desde Docker
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab04$ docker volume rm myVolume01 
+Error response from daemon: remove myVolume01: volume is in use - [59b83874f4efce27d14c94b4ffc444a0a323b955ac7b3754a81c040091d8d588, bc5ce371ab7adb218ff416cd720928c283753e7ca1f279cdf9cb28868cf4c040]
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab04$ docker volume ls
+DRIVER    VOLUME NAME
+local     myVolume01
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab04$ docker ps -a
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS                       PORTS     NAMES
+6280b1b76997   alpine    "sh -c 'echo 'Modifi…"   2 minutes ago   Exited (0) 2 minutes ago               jolly_aryabhata
+ebc65e54d86c   alpine    "cat /app/archivo.txt"   2 minutes ago   Exited (0) 2 minutes ago               intelligent_ganguly
+bc5ce371ab7a   alpine    "cat /data/prueba.txt"   3 minutes ago   Exited (0) 3 minutes ago               flamboyant_chatelet
+59b83874f4ef   alpine    "tail -f /dev/null"      6 minutes ago   Exited (137) 4 minutes ago             container_with_volume
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab04$ docker rm $(docker ps -aq)
+6280b1b76997
+ebc65e54d86c
+bc5ce371ab7a
+59b83874f4ef
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab04$ docker ps -a
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab04$ docker volume ls
+DRIVER    VOLUME NAME
+local     myVolume01
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab04$ docker volume rm myVolume01 
+myVolume01
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab04$ docker volume ls
+DRIVER    VOLUME NAME
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab04$ 
+
