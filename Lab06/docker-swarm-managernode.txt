@@ -1,0 +1,714 @@
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab05$ cd ..
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs$ mkdir Lab06
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs$ cd Lab06
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker swarm init --advertise-addr <IP_LOCAL_DEL_HOST>
+bash: syntax error near unexpected token `newline'
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ ifconfig
+docker0: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        inet 172.17.0.1  netmask 255.255.0.0  broadcast 172.17.255.255
+        ether 12:6c:e4:69:56:02  txqueuelen 0  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 1356 overruns 0  carrier 0  collisions 0
+
+eno1: flags=4099<UP,BROADCAST,MULTICAST>  mtu 1500
+        ether f8:ca:b8:4b:6a:84  txqueuelen 1000  (Ethernet)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+        device interrupt 20  memory 0xf7200000-f7220000  
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 41772  bytes 11117572 (11.1 MB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 41772  bytes 11117572 (11.1 MB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+virbr0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.122.1  netmask 255.255.255.0  broadcast 192.168.122.255
+        ether 52:54:00:36:72:a0  txqueuelen 1000  (Ethernet)
+        RX packets 743  bytes 66397 (66.3 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 813  bytes 3282192 (3.2 MB)
+        TX errors 0  dropped 1314 overruns 0  carrier 0  collisions 0
+
+vnet0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet6 fe80::fc54:ff:fe82:b77a  prefixlen 64  scopeid 0x20<link>
+        ether fe:54:00:82:b7:7a  txqueuelen 1000  (Ethernet)
+        RX packets 743  bytes 76799 (76.7 KB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 1348  bytes 3313438 (3.3 MB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+wlp2s0: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 192.168.1.10  netmask 255.255.255.0  broadcast 192.168.1.255
+        inet6 2800:e2:1380:1deb:eb67:a0d7:16db:64c7  prefixlen 64  scopeid 0x0<global>
+        inet6 2800:e2:1380:1deb:c3c5:9956:ada6:a763  prefixlen 64  scopeid 0x0<global>
+        inet6 fe80::3b72:bc89:4732:65d8  prefixlen 64  scopeid 0x20<link>
+        ether 10:02:b5:43:3d:e3  txqueuelen 1000  (Ethernet)
+        RX packets 1924399  bytes 2327866056 (2.3 GB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 414663  bytes 139375880 (139.3 MB)
+        TX errors 0  dropped 21 overruns 0  carrier 0  collisions 0
+
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ hostname -i
+127.0.1.1
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ hostname -I
+192.168.1.10 192.168.122.1 172.17.0.1 2800:e2:1380:1deb:eb67:a0d7:16db:64c7 2800:e2:1380:1deb:c3c5:9956:ada6:a763 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ arp
+Address                  HWtype  HWaddress           Flags Mask            Iface
+192.168.122.192          ether   52:54:00:82:b7:7a   C                     virbr0
+_gateway                 ether   a4:98:13:48:cd:1a   C                     wlp2s0
+192.168.1.3              ether   20:1f:3b:84:23:dc   C                     wlp2s0
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ ping 192.168.122.192
+PING 192.168.122.192 (192.168.122.192) 56(84) bytes of data.
+64 bytes from 192.168.122.192: icmp_seq=1 ttl=64 time=1.38 ms
+64 bytes from 192.168.122.192: icmp_seq=2 ttl=64 time=0.211 ms
+64 bytes from 192.168.122.192: icmp_seq=3 ttl=64 time=0.208 ms
+^C
+--- 192.168.122.192 ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2018ms
+rtt min/avg/max/mdev = 0.208/0.600/1.382/0.552 ms
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker swarm init --advertise-addr 192.168.1.10
+Swarm initialized: current node (mv0r51htqmhhe1rrraqv4pk2s) is now a manager.
+
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-3y8anh2hruhh5zt9qwnxf0nwd69rzhfv9e5ib53fj0tgbr60w7-ed1jy0ytvslqjp4muemdjra2g 192.168.1.10:2377
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instppapapaupapaupapaupaupaupauloenrpaulpauloepaupapapapapapaupauppppppppauloenrique@pauloenrique-Lpauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ sudo ufw allow 2377/tcp
+[sudo] password for pauloenrique: 
+Rules updated
+Rules updated (v6)
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ sudo ufw reload
+Firewall not enabled (skipping reload)
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ sudo ufw allow 7946/tcp
+sudo ufw allow 7946/udp
+sudo ufw allow 4789/udp
+Rules updated
+Rules updated (v6)
+Rules updated
+Rules updated (v6)
+Rules updated
+Rules updated (v6)
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ sudo systemctl restart docker
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker info | grep Swarm
+ Swarm: active
+WARNING: daemon is not using the default seccomp profile
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker swarm leave --force
+docker swarm init --advertise-addr 192.168.1.10
+Node left the swarm.
+Swarm initialized: current node (9anxwem6reobaz4jnqip8mnmm) is now a manager.
+
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-65fa939zxwhlfw3v04wg7h1kusldxgntoc862be1utlrmof4we-6sz7uptb2iz4pund72bi3w7p2 192.168.1.10:2377
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ sudo ufw status
+Status: inactive
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker node ls
+ID                            HOSTNAME         STATUS    AVAILABILITY   MANAGER STATUS   ENGINE VERSION
+9anxwem6reobaz4jnqip8mnmm *   docker-desktop   Ready     Active         Leader           28.0.1
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ sudo ufw allow 2377/tcp    # Swarm management
+sudo ufw allow 7946/tcp    # Communication between nodes
+sudo ufw allow 7946/udp
+sudo ufw allow 4789/udp    # Overlay network (VXLAN)
+sudo ufw reload
+Skipping adding existing rule
+Skipping adding existing rule (v6)
+Skipping adding existing rule
+Skipping adding existing rule (v6)
+Skipping adding existing rule
+Skipping adding existing rule (v6)
+Skipping adding existing rule
+Skipping adding existing rule (v6)
+Firewall not enabled (skipping reload)
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ sudo systemctl status firewalld
+Unit firewalld.service could not be found.
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ sudo ss -tuln | grep 2377
+
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker swarm leave --force
+Node left the swarm.
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ sudo systemctl restart docker
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ sudo systemctl status docker
+● docker.service - Docker Application Container Engine
+     Loaded: loaded (/usr/lib/systemd/system/docker.service; enabled; preset: enabled)
+     Active: active (running) since Wed 2025-04-16 17:19:46 -05; 5s ago
+TriggeredBy: ● docker.socket
+       Docs: https://docs.docker.com
+   Main PID: 303158 (dockerd)
+      Tasks: 10
+     Memory: 58.3M (peak: 59.7M)
+        CPU: 461ms
+     CGroup: /system.slice/docker.service
+             └─303158 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+
+Apr 16 17:19:45 pauloenrique-Latitude-E7450 dockerd[303158]: time="2025-04-16T17:19:45.378559016-05:00" level=info msg="Creating a containerd client" address=/run/containerd/container>
+Apr 16 17:19:45 pauloenrique-Latitude-E7450 dockerd[303158]: time="2025-04-16T17:19:45.433420040-05:00" level=info msg="[graphdriver] using prior storage driver: overlay2"
+Apr 16 17:19:45 pauloenrique-Latitude-E7450 dockerd[303158]: time="2025-04-16T17:19:45.435045068-05:00" level=info msg="Loading containers: start."
+Apr 16 17:19:46 pauloenrique-Latitude-E7450 dockerd[303158]: time="2025-04-16T17:19:46.093593981-05:00" level=info msg="Loading containers: done."
+Apr 16 17:19:46 pauloenrique-Latitude-E7450 dockerd[303158]: time="2025-04-16T17:19:46.115358248-05:00" level=info msg="Docker daemon" commit=6430e49 containerd-snapshotter=false stor>
+Apr 16 17:19:46 pauloenrique-Latitude-E7450 dockerd[303158]: time="2025-04-16T17:19:46.115427157-05:00" level=info msg="Initializing buildkit"
+Apr 16 17:19:46 pauloenrique-Latitude-E7450 dockerd[303158]: time="2025-04-16T17:19:46.140109401-05:00" level=info msg="Completed buildkit initialization"
+Apr 16 17:19:46 pauloenrique-Latitude-E7450 dockerd[303158]: time="2025-04-16T17:19:46.148420968-05:00" level=info msg="Daemon has completed initialization"
+Apr 16 17:19:46 pauloenrique-Latitude-E7450 dockerd[303158]: time="2025-04-16T17:19:46.148487898-05:00" level=info msg="API listen on /run/docker.sock"
+Apr 16 17:19:46 pauloenrique-Latitude-E7450 systemd[1]: Started docker.service - Docker Application Container Engine.
+
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker swarm init --advertise-addr 192.168.1.10
+Swarm initialized: current node (t6az7je7l3hfidpsw5ljhl32l) is now a manager.
+
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-0fikvcx3nx60d3j077z8r5dtls4mbkog1of3e0hy5eqz4xqcki-a79ifworpv2meairga0mx9n1d 192.168.1.10:2377
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ sudo ss -tuln | grep 2377
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ ip addr | grep 192.168
+    inet 192.168.1.10/24 brd 192.168.1.255 scope global dynamic noprefixroute wlp2s0
+    inet 192.168.122.1/24 brd 192.168.122.255 scope global virbr0
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker swarm leave --force
+docker swarm init --advertise-addr 192.168.1.10 --listen-addr 192.168.1.10:2377
+Node left the swarm.
+Error response from daemon: manager stopped: failed to listen on remote API address: listen tcp 192.168.1.10:2377: bind: cannot assign requested address
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker swarm leave --force
+docker swarm init
+Error response from daemon: This node is not part of a swarm
+Swarm initialized: current node (adfqyixsh4i0g8ohrkk5rc4u2) is now a manager.
+
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-4zclrw5w45aiktiu61kld7osohga3jrz40f23em4ckbsk3guae-8pnc0n4jugq1ztudyatdamlit 192.168.65.9:2377
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ sudo ss -tuln | grep 2377
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker info | grep -A3 Swarm
+ Swarm: active
+  NodeID: adfqyixsh4i0g8ohrkk5rc4u2
+WARNING: daemon is not using the default seccomp profile
+  Is Manager: true
+  ClusterID: m1umizqn6bjdfn4veg048srwv
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ sudo apt purge docker-desktop
+sudo apt install docker.io
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following packages were automatically installed and are no longer required:
+  libsubid4 uidmap
+Use 'sudo apt autoremove' to remove them.
+The following packages will be REMOVED:
+  docker-desktop*
+0 upgraded, 0 newly installed, 1 to remove and 2 not upgraded.
+After this operation, 0 B of additional disk space will be used.
+Do you want to continue? [Y/n] y
+(Reading database ... 224715 files and directories currently installed.)
+Removing docker-desktop (4.39.0-184744) ...
+Reloading systemd daemon for logged in users
+Done reloading systemd daemon for logged in users
+Processing triggers for gnome-menus (3.36.0-1.1ubuntu3) ...
+Processing triggers for desktop-file-utils (0.27-2build1) ...
+(Reading database ... 224540 files and directories currently installed.)
+Purging configuration files for docker-desktop (4.39.0-184744) ...
+Reloading systemd daemon for logged in users
+Done reloading systemd daemon for logged in users
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+Some packages could not be installed. This may mean that you have
+requested an impossible situation or if you are using the unstable
+distribution that some required packages have not yet been created
+or been moved out of Incoming.
+The following information may help to resolve the situation:
+
+The following packages have unmet dependencies:
+ containerd.io : Conflicts: containerd
+E: Error, pkgProblemResolver::Resolve generated breaks, this may be caused by held packages.
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ sudo apt remove docker-desktop docker-ce docker-ce-cli containerd.io containerd docker-buildx-plugin docker-compose-plugin
+sudo apt autoremove -y
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+E: Unable to locate package docker-desktop
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following packages will be REMOVED:
+  libsubid4 uidmap
+0 upgraded, 0 newly installed, 2 to remove and 2 not upgraded.
+After this operation, 208 kB disk space will be freed.
+(Reading database ... 224540 files and directories currently installed.)
+Removing uidmap (1:4.13+dfsg1-4ubuntu3.2) ...
+Removing libsubid4:amd64 (1:4.13+dfsg1-4ubuntu3.2) ...
+Processing triggers for man-db (2.12.0-4build2) ...
+Processing triggers for libc-bin (2.39-0ubuntu8.4) ...
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ which docker
+/usr/bin/docker
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ sudo apt remove --purge docker docker.io docker-engine docker-ce docker-ce-cli containerd containerd.io docker-buildx-plugin docker-compose-plugin -y
+sudo apt autoremove -y
+sudo rm -rf /var/lib/docker /var/lib/containerd
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+Package 'docker' is not installed, so not removed
+Package 'docker-engine' is not installed, so not removed
+Package 'docker.io' is not installed, so not removed
+Package 'containerd' is not installed, so not removed
+The following packages were automatically installed and are no longer required:
+  docker-ce-rootless-extras pigz slirp4netns
+Use 'sudo apt autoremove' to remove them.
+The following packages will be REMOVED:
+  containerd.io* docker-buildx-plugin* docker-ce* docker-ce-cli* docker-compose-plugin*
+0 upgraded, 0 newly installed, 5 to remove and 2 not upgraded.
+After this operation, 427 MB disk space will be freed.
+(Reading database ... 224521 files and directories currently installed.)
+Removing docker-ce (5:28.0.4-1~ubuntu.24.04~noble) ...
+Removing containerd.io (1.7.27-1) ...
+Removing docker-buildx-plugin (0.22.0-1~ubuntu.24.04~noble) ...
+Removing docker-ce-cli (5:28.0.4-1~ubuntu.24.04~noble) ...
+Removing docker-compose-plugin (2.34.0-1~ubuntu.24.04~noble) ...
+Processing triggers for man-db (2.12.0-4build2) ...
+(Reading database ... 224293 files and directories currently installed.)
+Purging configuration files for docker-ce (5:28.0.4-1~ubuntu.24.04~noble) ...
+Purging configuration files for containerd.io (1.7.27-1) ...
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following packages will be REMOVED:
+  docker-ce-rootless-extras pigz slirp4netns
+0 upgraded, 0 newly installed, 3 to remove and 2 not upgraded.
+After this operation, 14.2 MB disk space will be freed.
+(Reading database ... 224289 files and directories currently installed.)
+Removing docker-ce-rootless-extras (5:28.0.4-1~ubuntu.24.04~noble) ...
+Removing pigz (2.8-1) ...
+Removing slirp4netns (1.2.1-1build2) ...
+Processing triggers for man-db (2.12.0-4build2) ...
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+# Executing docker install script, commit: 4c94a56999e10efcf48c5b8e3f6afea464f9108e
++ sh -c apt-get -qq update >/dev/null
++ sh -c DEBIAN_FRONTEND=noninteractive apt-get -y -qq install ca-certificates curl >/dev/null
++ sh -c install -m 0755 -d /etc/apt/keyrings
++ sh -c curl -fsSL "https://download.docker.com/linux/ubuntu/gpg" -o /etc/apt/keyrings/docker.asc
++ sh -c chmod a+r /etc/apt/keyrings/docker.asc
++ sh -c echo "deb [arch=amd64 signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu noble stable" > /etc/apt/sources.list.d/docker.list
++ sh -c apt-get -qq update >/dev/null
++ sh -c DEBIAN_FRONTEND=noninteractive apt-get -y -qq install docker-ce docker-ce-cli containerd.io docker-compose-plugin docker-ce-rootless-extras docker-buildx-plugin >/dev/null
++ sh -c docker version
+Client: Docker Engine - Community
+ Version:           28.0.4
+ API version:       1.48
+ Go version:        go1.23.7
+ Git commit:        b8034c0
+ Built:             Tue Mar 25 15:07:16 2025
+ OS/Arch:           linux/amd64
+ Context:           default
+
+Server: Docker Engine - Community
+ Engine:
+  Version:          28.0.4
+  API version:      1.48 (minimum version 1.24)
+  Go version:       go1.23.7
+  Git commit:       6430e49
+  Built:            Tue Mar 25 15:07:16 2025
+  OS/Arch:          linux/amd64
+  Experimental:     false
+ containerd:
+  Version:          1.7.27
+  GitCommit:        05044ec0a9a75232cad458027ca83437aae3f4da
+ runc:
+  Version:          1.2.5
+  GitCommit:        v1.2.5-0-g59923ef
+ docker-init:
+  Version:          0.19.0
+  GitCommit:        de40ad0
+
+================================================================================
+
+To run Docker as a non-privileged user, consider setting up the
+Docker daemon in rootless mode for your user:
+
+    dockerd-rootless-setuptool.sh install
+
+Visit https://docs.docker.com/go/rootless/ to learn about rootless mode.
+
+
+To run the Docker daemon as a fully privileged service, but granting non-root
+users access, refer to https://docs.docker.com/go/daemon-access/
+
+WARNING: Access to the remote API on a privileged Docker daemon is equivalent
+         to root access on the host. Refer to the 'Docker daemon attack surface'
+         documentation for details: https://docs.docker.com/go/attack-surface/
+
+================================================================================
+
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ sudo systemctl enable docker
+sudo systemctl start docker
+docker --version
+docker info
+Synchronizing state of docker.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.
+Executing: /usr/lib/systemd/systemd-sysv-install enable docker
+bash: /usr/local/bin/docker: No such file or directory
+bash: /usr/local/bin/docker: No such file or directory
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ sudo systemctl start docker
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ sudo systemctl status docker
+● docker.service - Docker Application Container Engine
+     Loaded: loaded (/usr/lib/systemd/system/docker.service; enabled; preset: enabled)
+     Active: active (running) since Wed 2025-04-16 17:24:21 -05; 32s ago
+TriggeredBy: ● docker.socket
+       Docs: https://docs.docker.com
+   Main PID: 309554 (dockerd)
+      Tasks: 10
+     Memory: 20.6M (peak: 23.1M)
+        CPU: 337ms
+     CGroup: /system.slice/docker.service
+             └─309554 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+
+Apr 16 17:24:20 pauloenrique-Latitude-E7450 dockerd[309554]: time="2025-04-16T17:24:20.974341606-05:00" level=info msg="detected 127.0.0.53 nameserver, assuming systemd-resolved, so u>
+Apr 16 17:24:20 pauloenrique-Latitude-E7450 dockerd[309554]: time="2025-04-16T17:24:20.986158939-05:00" level=info msg="Creating a containerd client" address=/run/containerd/container>
+Apr 16 17:24:21 pauloenrique-Latitude-E7450 dockerd[309554]: time="2025-04-16T17:24:21.428022592-05:00" level=info msg="Loading containers: start."
+Apr 16 17:24:21 pauloenrique-Latitude-E7450 dockerd[309554]: time="2025-04-16T17:24:21.874200250-05:00" level=info msg="Loading containers: done."
+Apr 16 17:24:21 pauloenrique-Latitude-E7450 dockerd[309554]: time="2025-04-16T17:24:21.903675800-05:00" level=info msg="Docker daemon" commit=6430e49 containerd-snapshotter=false stor>
+Apr 16 17:24:21 pauloenrique-Latitude-E7450 dockerd[309554]: time="2025-04-16T17:24:21.903801687-05:00" level=info msg="Initializing buildkit"
+Apr 16 17:24:21 pauloenrique-Latitude-E7450 dockerd[309554]: time="2025-04-16T17:24:21.964886843-05:00" level=info msg="Completed buildkit initialization"
+Apr 16 17:24:21 pauloenrique-Latitude-E7450 dockerd[309554]: time="2025-04-16T17:24:21.971372733-05:00" level=info msg="Daemon has completed initialization"
+Apr 16 17:24:21 pauloenrique-Latitude-E7450 dockerd[309554]: time="2025-04-16T17:24:21.971439235-05:00" level=info msg="API listen on /run/docker.sock"
+Apr 16 17:24:21 pauloenrique-Latitude-E7450 systemd[1]: Started docker.service - Docker Application Container Engine.
+
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker swarm init --advertise-addr 192.168.1.10
+bash: /usr/local/bin/docker: No such file or directory
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker ps
+bash: /usr/local/bin/docker: No such file or directory
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ which docker
+/usr/bin/docker
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ sudo usermod -aG docker $USER
+newgrp docker  # Recarga los grupos sin cerrar sesión
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ /usr/bin/docker --version
+Docker version 28.0.4, build b8034c0
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ export PATH=$PATH:/usr/bin
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ which docker
+/usr/bin/docker
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker --version
+Docker version 28.0.4, build b8034c0
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker swarm init --advertise-addr 192.168.1.10
+Cannot connect to the Docker daemon at unix:///home/pauloenrique/.docker/desktop/docker.sock. Is the docker daemon running?
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ sudo systemctl enable docker
+Synchronizing state of docker.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.
+Executing: /usr/lib/systemd/systemd-sysv-install enable docker
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ sudo systemctl start docker
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker --version
+Docker version 28.0.4, build b8034c0
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker info
+Client: Docker Engine - Community
+ Version:    28.0.4
+ Context:    desktop-linux
+ Debug Mode: false
+ Plugins:
+  buildx: Docker Buildx (Docker Inc.)
+    Version:  v0.22.0
+    Path:     /usr/libexec/docker/cli-plugins/docker-buildx
+  compose: Docker Compose (Docker Inc.)
+    Version:  v2.34.0
+    Path:     /usr/libexec/docker/cli-plugins/docker-compose
+
+Server:
+ERROR: Cannot connect to the Docker daemon at unix:///home/pauloenrique/.docker/desktop/docker.sock. Is the docker daemon running?
+errors pretty printing info
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ rm -rf ~/.docker/desktop
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ sudo systemctl restart docker
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker info
+Client: Docker Engine - Community
+ Version:    28.0.4
+ Context:    desktop-linux
+ Debug Mode: false
+ Plugins:
+  buildx: Docker Buildx (Docker Inc.)
+    Version:  v0.22.0
+    Path:     /usr/libexec/docker/cli-plugins/docker-buildx
+  compose: Docker Compose (Docker Inc.)
+    Version:  v2.34.0
+    Path:     /usr/libexec/docker/cli-plugins/docker-compose
+
+Server:
+ERROR: Cannot connect to the Docker daemon at unix:///home/pauloenrique/.docker/desktop/docker.sock. Is the docker daemon running?
+errors pretty printing info
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker swarm init --advertise-addr 192.168.1.10
+Cannot connect to the Docker daemon at unix:///home/pauloenrique/.docker/desktop/docker.sock. Is the docker daemon running?
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker context use default
+default
+Current context is now "default"
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ sudo systemctl restart docker
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker info
+Client: Docker Engine - Community
+ Version:    28.0.4
+ Context:    default
+ Debug Mode: false
+ Plugins:
+  buildx: Docker Buildx (Docker Inc.)
+    Version:  v0.22.0
+    Path:     /usr/libexec/docker/cli-plugins/docker-buildx
+  compose: Docker Compose (Docker Inc.)
+    Version:  v2.34.0
+    Path:     /usr/libexec/docker/cli-plugins/docker-compose
+
+Server:
+ Containers: 0
+  Running: 0
+  Paused: 0
+  Stopped: 0
+ Images: 0
+ Server Version: 28.0.4
+ Storage Driver: overlay2
+  Backing Filesystem: extfs
+  Supports d_type: true
+  Using metacopy: false
+  Native Overlay Diff: true
+  userxattr: false
+ Logging Driver: json-file
+ Cgroup Driver: systemd
+ Cgroup Version: 2
+ Plugins:
+  Volume: local
+  Network: bridge host ipvlan macvlan null overlay
+  Log: awslogs fluentd gcplogs gelf journald json-file local splunk syslog
+ Swarm: inactive
+ Runtimes: io.containerd.runc.v2 runc
+ Default Runtime: runc
+ Init Binary: docker-init
+ containerd version: 05044ec0a9a75232cad458027ca83437aae3f4da
+ runc version: v1.2.5-0-g59923ef
+ init version: de40ad0
+ Security Options:
+  apparmor
+  seccomp
+   Profile: builtin
+  cgroupns
+ Kernel Version: 6.11.0-21-generic
+ Operating System: Ubuntu 24.04.2 LTS
+ OSType: linux
+ Architecture: x86_64
+ CPUs: 4
+ Total Memory: 15.49GiB
+ Name: pauloenrique-Latitude-E7450
+ ID: 48c149e8-7480-4aea-9af6-ebcf8fd7a36c
+ Docker Root Dir: /var/lib/docker
+ Debug Mode: false
+ Experimental: false
+ Insecure Registries:
+  ::1/128
+  127.0.0.0/8
+ Live Restore Enabled: false
+
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker swarm init --advertise-addr 192.168.1.10
+Swarm initialized: current node (acz4lo2cu51gts7i8lq1zzsfd) is now a manager.
+
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-2b129b6r8h2hqyew9aifku4fzyy2dy28742x9739b0q0i8qcie-blr2z81ejvu576s4axtlu9w5s 192.168.1.10:2377
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ sudo ss -tuln | grep 2377
+tcp   LISTEN 0      4096                                    *:2377             *:*          
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker node ls
+ID                            HOSTNAME                      STATUS    AVAILABILITY   MANAGER STATUS   ENGINE VERSION
+vzitg6zdy20iy0mu3ngxq2t27     debian                        Ready     Active                          28.0.4
+acz4lo2cu51gts7i8lq1zzsfd *   pauloenrique-Latitude-E7450   Ready     Active         Leader           28.0.4
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker info
+Client: Docker Engine - Community
+
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker service create --name test -p 80:80 --replicas 2 nginx
+ggzf6q3gwgqlpgj4mljeq3f4h
+overall progress: 2 out of 2 tasks 
+1/2: running   [==================================================>] 
+2/2: running   [==================================================>] 
+verify: Service ggzf6q3gwgqlpgj4mljeq3f4h converged 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker service ls
+ID             NAME      MODE         REPLICAS   IMAGE          PORTS
+ggzf6q3gwgql   test      replicated   2/2        nginx:latest   *:80->80/tcp
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker service inspect test
+[
+    {
+        "ID": "ggzf6q3gwgqlpgj4mljeq3f4h",
+        "Version": {
+            "Index": 17
+        },
+        "CreatedAt": "2025-04-16T22:34:06.571280139Z",
+        "UpdatedAt": "2025-04-16T22:34:06.576854588Z",
+        "Spec": {
+            "Name": "test",
+            "Labels": {},
+            "TaskTemplate": {
+                "ContainerSpec": {
+                    "Image": "nginx:latest@sha256:5ed8fcc66f4ed123c1b2560ed708dc148755b6e4cbd8b943fab094f2c6bfa91e",
+                    "Init": false,
+                    "StopGracePeriod": 10000000000,
+                    "DNSConfig": {},
+                    "Isolation": "default"
+                },
+                "Resources": {
+                    "Limits": {},
+                    "Reservations": {}
+                },
+                "RestartPolicy": {
+                    "Condition": "any",
+                    "Delay": 5000000000,
+                    "MaxAttempts": 0
+                },
+                "Placement": {
+                    "Platforms": [
+                        {
+                            "Architecture": "amd64",
+                            "OS": "linux"
+                        },
+                        {
+                            "Architecture": "unknown",
+                            "OS": "unknown"
+                        },
+                        {
+                            "OS": "linux"
+                        },
+                        {
+                            "Architecture": "unknown",
+                            "OS": "unknown"
+                        },
+                        {
+                            "OS": "linux"
+                        },
+                        {
+                            "Architecture": "unknown",
+                            "OS": "unknown"
+                        },
+                        {
+                            "Architecture": "arm64",
+                            "OS": "linux"
+                        },
+                        {
+                            "Architecture": "unknown",
+                            "OS": "unknown"
+                        },
+                        {
+                            "Architecture": "386",
+                            "OS": "linux"
+                        },
+                        {
+                            "Architecture": "unknown",
+                            "OS": "unknown"
+                        },
+                        {
+                            "Architecture": "mips64le",
+                            "OS": "linux"
+                        },
+                        {
+                            "Architecture": "unknown",
+                            "OS": "unknown"
+                        },
+                        {
+                            "Architecture": "ppc64le",
+                            "OS": "linux"
+                        },
+                        {
+                            "Architecture": "unknown",
+                            "OS": "unknown"
+                        },
+                        {
+                            "Architecture": "s390x",
+                            "OS": "linux"
+                        },
+                        {
+                            "Architecture": "unknown",
+                            "OS": "unknown"
+                        }
+                    ]
+                },
+                "ForceUpdate": 0,
+                "Runtime": "container"
+            },
+            "Mode": {
+                "Replicated": {
+                    "Replicas": 2
+                }
+            },
+            "UpdateConfig": {
+                "Parallelism": 1,
+                "FailureAction": "pause",
+                "Monitor": 5000000000,
+                "MaxFailureRatio": 0,
+                "Order": "stop-first"
+            },
+            "RollbackConfig": {
+                "Parallelism": 1,
+                "FailureAction": "pause",
+                "Monitor": 5000000000,
+                "MaxFailureRatio": 0,
+                "Order": "stop-first"
+            },
+            "EndpointSpec": {
+                "Mode": "vip",
+                "Ports": [
+                    {
+                        "Protocol": "tcp",
+                        "TargetPort": 80,
+                        "PublishedPort": 80,
+                        "PublishMode": "ingress"
+                    }
+                ]
+            }
+        },
+        "Endpoint": {
+            "Spec": {
+                "Mode": "vip",
+                "Ports": [
+                    {
+                        "Protocol": "tcp",
+                        "TargetPort": 80,
+                        "PublishedPort": 80,
+                        "PublishMode": "ingress"
+                    }
+                ]
+            },
+            "Ports": [
+                {
+                    "Protocol": "tcp",
+                    "TargetPort": 80,
+                    "PublishedPort": 80,
+                    "PublishMode": "ingress"
+                }
+            ],
+            "VirtualIPs": [
+                {
+                    "NetworkID": "hqn0e3w3u2gwaibc3s0b1ptox",
+                    "Addr": "10.0.0.4/24"
+                }
+            ]
+        }
+    }
+]
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab06$ docker service ps test
+ID             NAME      IMAGE          NODE                          DESIRED STATE   CURRENT STATE            ERROR     PORTS
+p7ph1kpym010   test.1    nginx:latest   debian                        Running         Running 49 seconds ago             
+k9cbtm6uammk   test.2    nginx:latest   pauloenrique-Latitude-E7450   Running         Running 50 seconds ago      
