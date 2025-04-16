@@ -1,0 +1,24 @@
+loenrique@debian:~$ docker swarm join --token SWMTKN-1-2b129b6r8h2hqyew9aifku4fzyy2dy28742x9739b0q0i8qcie-blr2z81ejvu576s4axtlu9w5s 192.168.1.10:2377
+This node joined a swarm as a worker.
+pauloenrique@debian:~$ docker node ls
+Error response from daemon: This node is not a swarm manager. Worker nodes can't be used to view or modify cluster state. Please run this command on a manager node or promote the current node to a manager.
+pauloenrique@debian:~$ docker info | grep -i swarm
+ Swarm: active
+pauloenrique@debian:~$ docker ps
+CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS         PORTS     NAMES
+a38778d1b3a9   nginx:latest   "/docker-entrypoint.…"   3 minutes ago   Up 3 minutes   80/tcp    test.1.p7ph1kpym0109hj53muzlsjyz
+pauloenrique@debian:~$ docker logs $(docker ps -q --filter name=test)
+/docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
+/docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
+10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf
+10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf
+/docker-entrypoint.sh: Sourcing /docker-entrypoint.d/15-local-resolvers.envsh
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
+CONTAINER ID   NAME                               CPU %     MEM USAGE / LIMIT   MEM %     NET I/O   BLOCK I/O   PIDS 
+a38778d1b3a9   test.1.p7ph1kpym0109hj53muzlsjyz   --        -- / --             --        --        --          -- 
+ 
+^C
+got 3 SIGTERM/SIGINTs, forcefully exiting
+pauloenrique@debian:~$ 
+
