@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  stress:
+    image: polinux/stress
+    command: stress --cpu 2 --timeout 60s
+    container_name: stress-ng
+
+  web:
+    image: nginx
+    container_name: nginx-test
+    ports:
+      - "8081:80"
+
+  base:
+    image: ubuntu
+    container_name: ubuntu-top
+    command: sleep 1000
+
+  debug:
+    build:
+      context: .
+      dockerfile: Dockerfile.debug
+    container_name: debug-toolkit
+    cap_add:
+      - SYS_PTRACE
+      - NET_ADMIN
+    stdin_open: true
+    tty: true

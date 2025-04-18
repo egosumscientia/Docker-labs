@@ -1,0 +1,3 @@
+pauloenrique@fedora:~$ docker swarm join --token SWMTKN-1-2j627rjbmtyd1r4z35p5nelyevs1o80ktuewqvr6ozgr1x8fq8-67uf6f5wmkbak63zd6c7ugki1 192.168.1.10:2377
+This node joined a swarm as a worker.
+pauloenrique@fedora:~$

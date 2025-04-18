@@ -1,0 +1,123 @@
+pauloenrique@pauloenrique-Latitude-E7450:~$ cd Documents/
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents$ cd Development/Docker-labs/
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs$ ls
+Docker_labs.odt  Lab01  Lab02  Lab03  Lab04  Lab05  Lab06  Lab07
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs$ mkdir Lab08 && cd Lab08
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab08$ ls
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab08$ touch docker-compose.yml
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab08$ mkdir prometheus && touch prometheus/prometheus.yml
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab08$ ls
+docker-compose.yml  prometheus
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab08$ nano docker-compose.yml 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab08$ nano docker-compose.yml 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab08$ cd prometheus/
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab08/prometheus$ ll
+total 8
+drwxrwxr-x 2 pauloenrique pauloenrique 4096 Apr 17 08:19 ./
+drwxrwxr-x 3 pauloenrique pauloenrique 4096 Apr 17 08:19 ../
+-rw-rw-r-- 1 pauloenrique pauloenrique    0 Apr 17 08:19 prometheus.yml
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab08/prometheus$ nano prometheus.yml 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab08/prometheus$ nano prometheus.yml 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab08/prometheus$ nano prometheus.yml 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab08/prometheus$ nano prometheus.yml 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab08/prometheus$ cd ..
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab08$ docker-compose up -d
+Creating network "lab08_monitoring" with driver "bridge"
+Pulling prometheus (prom/prometheus:)...
+latest: Pulling from prom/prometheus
+9fa9226be034: Pull complete
+1617e25568b2: Pull complete
+9b9d79238f8b: Pull complete
+106f68af2002: Pull complete
+92c2f87eeb17: Pull complete
+4f41336c2101: Pull complete
+5786756b1404: Pull complete
+54cdc7571130: Pull complete
+1c14205dd2d7: Pull complete
+6440af355f6b: Pull complete
+Digest: sha256:339ce86a59413be18d0e445472891d022725b4803fab609069110205e79fb2f1
+Status: Downloaded newer image for prom/prometheus:latest
+Pulling grafana (grafana/grafana:)...
+latest: Pulling from grafana/grafana
+f18232174bc9: Already exists
+70ca445a67c2: Pull complete
+bbb8b5218cfb: Pull complete
+2a08a00fe446: Pull complete
+5b32a5607528: Pull complete
+c0a27b1e2168: Pull complete
+ce185550173e: Pull complete
+daf4bae1c5dd: Pull complete
+b9d78c8c657a: Pull complete
+babadc1b811e: Pull complete
+Digest: sha256:62d2b9d20a19714ebfe48d1bb405086081bc602aa053e28cf6d73c7537640dfb
+Status: Downloaded newer image for grafana/grafana:latest
+Pulling cadvisor (gcr.io/cadvisor/cadvisor:latest)...
+latest: Pulling from cadvisor/cadvisor
+619be1103602: Pull complete
+3b8469b194b8: Pull complete
+6361eeb1639c: Pull complete
+4f4fb700ef54: Pull complete
+902eccca70f3: Pull complete
+Digest: sha256:3cde6faf0791ebf7b41d6f8ae7145466fed712ea6f252c935294d2608b1af388
+Status: Downloaded newer image for gcr.io/cadvisor/cadvisor:latest
+Creating prometheus ... done
+Creating cadvisor   ... 
+Creating cadvisor   ... error
+WARNING: Host is already in use by another container
+
+ERROR: for cadvisor  Cannot start service cadvisor: failed to set up container networking: driver failed programming external connectivity on endpoint cadvisor (7c9abb5cc9db7ae7f974d94Creating grafana    ... done
+
+ERROR: for cadvisor  Cannot start service cadvisor: failed to set up container networking: driver failed programming external connectivity on endpoint cadvisor (7c9abb5cc9db7ae7f974d94ecbf1c1b370f4ace7a16734fce3471ae5f392186a): failed to bind host port for 0.0.0.0:8080:172.19.0.3:8080/tcp: address already in use
+ERROR: Encountered errors while bringing up the project.
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab08$ nano docker-compose.yml 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab08$ nano docker-compose.yml 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab08$ docker-compose down && docker-compose up -d
+Stopping grafana    ... done
+Stopping prometheus ... done
+Removing grafana    ... done
+Removing cadvisor   ... done
+Removing prometheus ... done
+Removing network lab08_monitoring
+Creating network "lab08_monitoring" with driver "bridge"
+Creating cadvisor   ... done
+Creating prometheus ... done
+Creating grafana    ... done
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab08$ docker ps -a
+CONTAINER ID   IMAGE                             COMMAND                  CREATED          STATUS                             PORTS                                         NAMES
+c38e738d5625   grafana/grafana                   "/run.sh"                15 seconds ago   Up 15 seconds                      0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp   grafana
+1f9533b5ac28   prom/prometheus                   "/bin/prometheus --c…"   16 seconds ago   Up 15 seconds                      0.0.0.0:9090->9090/tcp, [::]:9090->9090/tcp   prometheus
+cbe14f1e5872   gcr.io/cadvisor/cadvisor:latest   "/usr/bin/cadvisor -…"   16 seconds ago   Up 15 seconds (health: starting)   0.0.0.0:8081->8080/tcp, [::]:8081->8080/tcp   cadvisor
+c144bd6ae6e9   hello-world                       "/hello"                 12 hours ago     Exited (0) 12 hours ago                                                          condescending_banzai
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab08$ docker-compose ps
+   Name                 Command                  State                        Ports                  
+-----------------------------------------------------------------------------------------------------
+cadvisor     /usr/bin/cadvisor -logtostderr   Up (healthy)   0.0.0.0:8081->8080/tcp,:::8081->8080/tcp
+grafana      /run.sh                          Up             0.0.0.0:3000->3000/tcp,:::3000->3000/tcp
+prometheus   /bin/prometheus --config.f ...   Up             0.0.0.0:9090->9090/tcp,:::9090->9090/tcp
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab08$ mkdir lab08-results.txt
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab08$ nano lab08-results.txt/
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab08$ docker-compose logs -f prometheus
+Attaching to prometheus
+prometheus    | time=2025-04-17T13:24:35.061Z level=INFO source=main.go:640 msg="No time or size retention was set so using the default time retention" duration=15d
+prometheus    | time=2025-04-17T13:24:35.062Z level=INFO source=main.go:687 msg="Starting Prometheus Server" mode=server version="(version=3.3.0, branch=HEAD, revision=3c49e69330ceee9c587a1d994c78535695edff16)"
+prometheus    | time=2025-04-17T13:24:35.062Z level=INFO source=main.go:692 msg="operational information" build_context="(go=go1.24.1, platform=linux/amd64, user=root@b362765c931d, date=20250415-13:32:00, tags=netgo,builtinassets,stringlabels)" host_details="(Linux 6.11.0-21-generic #21~24.04.1-Ubuntu SMP PREEMPT_DYNAMIC Mon Feb 24 16:52:15 UTC 2 x86_64 1f9533b5ac28 (none))" fd_limits="(soft=1048576, hard=1048576)" vm_limits="(soft=unlimited, hard=unlimited)"
+prometheus    | time=2025-04-17T13:24:35.063Z level=INFO source=main.go:768 msg="Leaving GOMAXPROCS=4: CPU quota undefined" component=automaxprocs
+prometheus    | time=2025-04-17T13:24:35.072Z level=INFO source=web.go:654 msg="Start listening for connections" component=web address=0.0.0.0:9090
+prometheus    | time=2025-04-17T13:24:35.073Z level=INFO source=main.go:1228 msg="Starting TSDB ..."
+prometheus    | time=2025-04-17T13:24:35.076Z level=INFO source=tls_config.go:347 msg="Listening on" component=web address=[::]:9090
+prometheus    | time=2025-04-17T13:24:35.077Z level=INFO source=tls_config.go:350 msg="TLS is disabled." component=web http2=false address=[::]:9090
+prometheus    | time=2025-04-17T13:24:35.081Z level=INFO source=head.go:638 msg="Replaying on-disk memory mappable chunks if any" component=tsdb
+prometheus    | time=2025-04-17T13:24:35.081Z level=INFO source=head.go:725 msg="On-disk memory mappable chunks replay completed" component=tsdb duration=8.034µs
+prometheus    | time=2025-04-17T13:24:35.081Z level=INFO source=head.go:733 msg="Replaying WAL, this may take a while" component=tsdb
+prometheus    | time=2025-04-17T13:24:35.082Z level=INFO source=head.go:805 msg="WAL segment loaded" component=tsdb segment=0 maxSegment=0
+prometheus    | time=2025-04-17T13:24:35.082Z level=INFO source=head.go:842 msg="WAL replay completed" component=tsdb checkpoint_replay_duration=69.519µs wal_replay_duration=406.328µs wbl_replay_duration=160ns chunk_snapshot_load_duration=0s mmap_chunk_replay_duration=8.034µs total_replay_duration=750.137µs
+prometheus    | time=2025-04-17T13:24:35.112Z level=INFO source=main.go:1249 msg="filesystem information" fs_type=EXT4_SUPER_MAGIC
+prometheus    | time=2025-04-17T13:24:35.112Z level=INFO source=main.go:1252 msg="TSDB started"
+prometheus    | time=2025-04-17T13:24:35.112Z level=INFO source=main.go:1437 msg="Loading configuration file" filename=/etc/prometheus/prometheus.yml
+prometheus    | time=2025-04-17T13:24:35.114Z level=INFO source=main.go:1476 msg="updated GOGC" old=100 new=75
+prometheus    | time=2025-04-17T13:24:35.114Z level=INFO source=main.go:1486 msg="Completed loading of configuration file" db_storage=949ns remote_storage=1.527µs web_handler=492ns query_engine=994ns scrape=291.637µs scrape_sd=1.355964ms notify=2.319µs notify_sd=922ns rules=1.637µs tracing=8.604µs filename=/etc/prometheus/prometheus.yml totalDuration=2.022674ms
+prometheus    | time=2025-04-17T13:24:35.114Z level=INFO source=main.go:1213 msg="Server is ready to receive web requests."
+prometheus    | time=2025-04-17T13:24:35.114Z level=INFO source=manager.go:175 msg="Starting rule manager..." component="rule manager"
+
+
+^CERROR: Aborting.

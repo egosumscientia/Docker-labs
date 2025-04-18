@@ -1,0 +1,74 @@
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab09$ kubectl top pods
+NAME                              CPU(cores)   MEMORY(bytes)   
+web-deployment-77fff757f8-77nnn   0m           4Mi             
+web-deployment-77fff757f8-xq96w   0m           4Mi             
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab09$ kubectl top nodes
+NAME       CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
+minikube   190m         4%     941Mi           5%        
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab09$ kubectl apply -f deployment.yaml
+error: the path "deployment.yaml" does not exist
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab09$ kubectl get all -A  # Muestra TODOS los recursos en todos los namespaces
+NAMESPACE              NAME                                             READY   STATUS    RESTARTS      AGE
+default                pod/web-deployment-77fff757f8-77nnn              1/1     Running   0             4m45s
+default                pod/web-deployment-77fff757f8-xq96w              1/1     Running   0             4m42s
+kube-system            pod/coredns-668d6bf9bc-mj68z                     1/1     Running   0             43m
+kube-system            pod/etcd-minikube                                1/1     Running   0             43m
+kube-system            pod/kube-apiserver-minikube                      1/1     Running   0             43m
+kube-system            pod/kube-controller-manager-minikube             1/1     Running   0             43m
+kube-system            pod/kube-proxy-kkpxn                             1/1     Running   0             43m
+kube-system            pod/kube-scheduler-minikube                      1/1     Running   0             43m
+kube-system            pod/metrics-server-5957f66fcf-2k8t2              1/1     Running   0             15m
+kube-system            pod/storage-provisioner                          1/1     Running   1 (43m ago)   43m
+kubernetes-dashboard   pod/dashboard-metrics-scraper-5d59dccf9b-884th   1/1     Running   0             42m
+kubernetes-dashboard   pod/kubernetes-dashboard-7779f9b69b-7qx5q        1/1     Running   0             42m
+
+NAMESPACE              NAME                                TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                  AGE
+default                service/kubernetes                  ClusterIP   10.96.0.1        <none>        443/TCP                  43m
+default                service/web-service                 NodePort    10.98.33.132     <none>        80:30080/TCP             26m
+kube-system            service/kube-dns                    ClusterIP   10.96.0.10       <none>        53/UDP,53/TCP,9153/TCP   43m
+kube-system            service/metrics-server              ClusterIP   10.106.86.229    <none>        443/TCP                  16m
+kubernetes-dashboard   service/dashboard-metrics-scraper   ClusterIP   10.102.198.79    <none>        8000/TCP                 42m
+kubernetes-dashboard   service/kubernetes-dashboard        ClusterIP   10.106.214.185   <none>        80/TCP                   42m
+
+NAMESPACE     NAME                        DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR            AGE
+kube-system   daemonset.apps/kube-proxy   1         1         1       1            1           kubernetes.io/os=linux   43m
+
+NAMESPACE              NAME                                        READY   UP-TO-DATE   AVAILABLE   AGE
+default                deployment.apps/web-deployment              2/2     2            2           26m
+kube-system            deployment.apps/coredns                     1/1     1            1           43m
+kube-system            deployment.apps/metrics-server              1/1     1            1           16m
+kubernetes-dashboard   deployment.apps/dashboard-metrics-scraper   1/1     1            1           42m
+kubernetes-dashboard   deployment.apps/kubernetes-dashboard        1/1     1            1           42m
+
+NAMESPACE              NAME                                                   DESIRED   CURRENT   READY   AGE
+default                replicaset.apps/web-deployment-77fff757f8              2         2         2       4m45s
+default                replicaset.apps/web-deployment-78df96f968              0         0         0       26m
+kube-system            replicaset.apps/coredns-668d6bf9bc                     1         1         1       43m
+kube-system            replicaset.apps/metrics-server-5957f66fcf              1         1         1       15m
+kube-system            replicaset.apps/metrics-server-6f7dd4c4c4              0         0         0       16m
+kube-system            replicaset.apps/metrics-server-7d8d8cb5d9              0         0         0       16m
+kube-system            replicaset.apps/metrics-server-8467fcc7b7              0         0         0       16m
+kubernetes-dashboard   replicaset.apps/dashboard-metrics-scraper-5d59dccf9b   1         1         1       42m
+kubernetes-dashboard   replicaset.apps/kubernetes-dashboard-7779f9b69b        1         1         1       42m
+
+NAMESPACE   NAME                                          REFERENCE                   TARGETS       MINPODS   MAXPODS   REPLICAS   AGE
+default     horizontalpodautoscaler.autoscaling/web-hpa   Deployment/web-deployment   cpu: 0%/50%   2         5         2          26m
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab09$ kubectl get nodes
+NAME       STATUS   ROLES           AGE   VERSION
+minikube   Ready    control-plane   44m   v1.32.0
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab09$ kubectl top nodes  # Uso de CPU/Memoria de los nodos
+kubectl top pods   # Uso de CPU/Memoria de los pods
+NAME       CPU(cores)   CPU%   MEMORY(bytes)   MEMORY%   
+minikube   139m         3%     937Mi           5%        
+NAME                              CPU(cores)   MEMORY(bytes)   
+web-deployment-77fff757f8-77nnn   0m           4Mi             
+web-deployment-77fff757f8-xq96w   0m           4Mi             
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab09$ kubectl get services
+NAME          TYPE        CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+kubernetes    ClusterIP   10.96.0.1      <none>        443/TCP        44m
+web-service   NodePort    10.98.33.132   <none>        80:30080/TCP   27m
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab09$ kubectl get pods
+NAME                              READY   STATUS    RESTARTS   AGE
+web-deployment-77fff757f8-77nnn   1/1     Running   0          7m6s
+web-deployment-77fff757f8-xq96w   1/1     Running   0          7m3s
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab09$ 

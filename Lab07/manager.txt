@@ -1,0 +1,487 @@
+pauloenrique@pauloenrique-Latitude-E7450:~$ sudo swapoff -a
+[sudo] password for pauloenrique: 
+pauloenrique@pauloenrique-Latitude-E7450:~$ sudo swapon -a
+pauloenrique@pauloenrique-Latitude-E7450:~$ cd Documents/Development/Docker-labs/Lab07
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ ls
+Dockerfile
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker build --no-cache -t secure-app .
+[+] Building 0.5s (2/2) FINISHED                                                                                                                                         docker:default
+ => [internal] load build definition from Dockerfile                                                                                                                               0.0s
+ => => transferring dockerfile: 95B                                                                                                                                                0.0s
+ => ERROR [internal] load metadata for docker.io/library/alpine:latest                                                                                                             0.4s
+------
+ > [internal] load metadata for docker.io/library/alpine:latest:
+------
+Dockerfile:1
+--------------------
+   1 | >>> FROM alpine
+   2 |     RUN adduser -D appuser
+   3 |     USER appuser
+--------------------
+ERROR: failed to solve: alpine: failed to resolve source metadata for docker.io/library/alpine:latest: error getting credentials - err: exec: "docker-credential-desktop": executable file not found in $PATH, out: ``
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker build --no-cache -t secure-app .
+[+] Building 0.4s (2/2) FINISHED                                                                                                                                         docker:default
+ => [internal] load build definition from Dockerfile                                                                                                                               0.0s
+ => => transferring dockerfile: 95B                                                                                                                                                0.0s
+ => ERROR [internal] load metadata for docker.io/library/alpine:latest                                                                                                             0.3s
+------
+ > [internal] load metadata for docker.io/library/alpine:latest:
+------
+Dockerfile:1
+--------------------
+   1 | >>> FROM alpine
+   2 |     RUN adduser -D appuser
+   3 |     USER appuser
+--------------------
+ERROR: failed to solve: alpine: failed to resolve source metadata for docker.io/library/alpine:latest: error getting credentials - err: exec: "docker-credential-desktop": executable file not found in $PATH, out: ``
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker info
+Client: Docker Engine - Community
+ Version:    28.0.4
+ Context:    default
+ Debug Mode: false
+ Plugins:
+  buildx: Docker Buildx (Docker Inc.)
+    Version:  v0.22.0
+    Path:     /usr/libexec/docker/cli-plugins/docker-buildx
+  compose: Docker Compose (Docker Inc.)
+    Version:  v2.34.0
+    Path:     /usr/libexec/docker/cli-plugins/docker-compose
+
+Server:
+ Containers: 0
+  Running: 0
+  Paused: 0
+  Stopped: 0
+ Images: 1
+ Server Version: 28.0.4
+ Storage Driver: overlay2
+  Backing Filesystem: extfs
+  Supports d_type: true
+  Using metacopy: false
+  Native Overlay Diff: true
+  userxattr: false
+ Logging Driver: json-file
+ Cgroup Driver: systemd
+ Cgroup Version: 2
+ Plugins:
+  Volume: local
+  Network: bridge host ipvlan macvlan null overlay
+  Log: awslogs fluentd gcplogs gelf journald json-file local splunk syslog
+ Swarm: active
+  NodeID: acz4lo2cu51gts7i8lq1zzsfd
+  Is Manager: true
+  ClusterID: 77l8wemlblv7xxpmy9y5djuey
+  Managers: 1
+  Nodes: 2
+  Data Path Port: 4789
+  Orchestration:
+   Task History Retention Limit: 5
+  Raft:
+   Snapshot Interval: 10000
+   Number of Old Snapshots to Retain: 0
+   Heartbeat Tick: 1
+   Election Tick: 10
+  Dispatcher:
+   Heartbeat Period: 5 seconds
+  CA Configuration:
+   Expiry Duration: 3 months
+   Force Rotate: 0
+  Autolock Managers: false
+  Root Rotation In Progress: false
+  Node Address: 192.168.1.10
+  Manager Addresses:
+   192.168.1.10:2377
+ Runtimes: io.containerd.runc.v2 runc
+ Default Runtime: runc
+ Init Binary: docker-init
+ containerd version: 05044ec0a9a75232cad458027ca83437aae3f4da
+ runc version: v1.2.5-0-g59923ef
+ init version: de40ad0
+ Security Options:
+  apparmor
+  seccomp
+   Profile: builtin
+  cgroupns
+ Kernel Version: 6.11.0-21-generic
+ Operating System: Ubuntu 24.04.2 LTS
+ OSType: linux
+ Architecture: x86_64
+ CPUs: 4
+ Total Memory: 15.49GiB
+ Name: pauloenrique-Latitude-E7450
+ ID: 48c149e8-7480-4aea-9af6-ebcf8fd7a36c
+ Docker Root Dir: /var/lib/docker
+ Debug Mode: false
+ Experimental: false
+ Insecure Registries:
+  ::1/128
+  127.0.0.0/8
+ Live Restore Enabled: false
+
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ nano ~/.docker/config.json
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker build -t secure-app .
+[+] Building 3.5s (6/6) FINISHED                                                                                                                                         docker:default
+ => [internal] load build definition from Dockerfile                                                                                                                               0.0s
+ => => transferring dockerfile: 95B                                                                                                                                                0.0s
+ => [internal] load metadata for docker.io/library/alpine:latest                                                                                                                   1.8s
+ => [internal] load .dockerignore                                                                                                                                                  0.0s
+ => => transferring context: 2B                                                                                                                                                    0.0s
+ => [1/2] FROM docker.io/library/alpine:latest@sha256:a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e74aff4511df3ef88c                                                             1.0s
+ => => resolve docker.io/library/alpine:latest@sha256:a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e74aff4511df3ef88c                                                             0.0s
+ => => sha256:a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e74aff4511df3ef88c 9.22kB / 9.22kB                                                                                     0.0s
+ => => sha256:1c4eef651f65e2f7daee7ee785882ac164b02b78fb74503052a26dc061c90474 1.02kB / 1.02kB                                                                                     0.0s
+ => => sha256:aded1e1a5b3705116fa0a92ba074a5e0b0031647d9c315983ccba2ee5428ec8b 581B / 581B                                                                                         0.0s
+ => => sha256:f18232174bc91741fdf3da96d85011092101a032a93a388b79e99e69c2d5c870 3.64MB / 3.64MB                                                                                     0.8s
+ => => extracting sha256:f18232174bc91741fdf3da96d85011092101a032a93a388b79e99e69c2d5c870                                                                                          0.1s
+ => [2/2] RUN adduser -D appuser                                                                                                                                                   0.5s
+ => exporting to image                                                                                                                                                             0.1s
+ => => exporting layers                                                                                                                                                            0.1s
+ => => writing image sha256:6ac2ce757549d449daf3586a2dea54834ced642e101108dc98a922d37f3d07de                                                                                       0.0s
+ => => naming to docker.io/library/secure-app                                                                                                                                      0.0s
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker run -it --rm secure-app whoami  # Debe mostrar "appuser"
+appuser
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker run -it --rm --user 1000:1000 alpine whoami  # Usuario sin privilegios
+Unable to find image 'alpine:latest' locally
+latest: Pulling from library/alpine
+f18232174bc9: Already exists 
+Digest: sha256:a8560b36e8b8210634f77d9f7f9efd7ffa463e380b75e2e74aff4511df3ef88c
+Status: Downloaded newer image for alpine:latest
+whoami: unknown uid 1000
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker run -it --rm --user 1000:1000 alpine whoami  # Usuario sin privilegios
+whoami: unknown uid 1000
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker run -it --rm alpine sh -c "adduser -D -u 1000 myuser && su myuser -c whoami"
+myuser
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker run -it --rm --user 100 alpine whoami  # Use an existing system user (e.g., UID 100)
+whoami: unknown uid 100
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker run -it --rm --user 1000:1000 alpine whoami  # Usuario sin privilegios
+whoami: unknown uid 1000
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker build -t my-alpine .
+docker run -it --rm my-alpine whoami  # Will show "myuser"
+[+] Building 0.6s (6/6) FINISHED                                                                                                                                         docker:default
+ => [internal] load build definition from Dockerfile                                                                                                                               0.0s
+ => => transferring dockerfile: 93B                                                                                                                                                0.0s
+ => [internal] load metadata for docker.io/library/alpine:latest                                                                                                                   0.0s
+ => [internal] load .dockerignore                                                                                                                                                  0.0s
+ => => transferring context: 2B                                                                                                                                                    0.0s
+ => CACHED [1/2] FROM docker.io/library/alpine:latest                                                                                                                              0.0s
+ => [2/2] RUN adduser -D -u 1000 myuser                                                                                                                                            0.3s
+ => exporting to image                                                                                                                                                             0.1s
+ => => exporting layers                                                                                                                                                            0.1s
+ => => writing image sha256:f91843b1f6c60ff6b8d68e2bd9e273b289ceca9d819bb5f5ef47e9b8539e6810                                                                                       0.0s
+ => => naming to docker.io/library/my-alpine                                                                                                                                       0.0s
+myuser
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker run -it --rm my-alpine id  # Shows UID/GID info
+uid=1000(myuser) gid=1000(myuser) groups=1000(myuser)
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker run -it --rm my-alpine sh -c "touch /tmp/test && ls -l /tmp/test"
+-rw-r--r--    1 myuser   myuser           0 Apr 17 00:30 /tmp/test
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker build -t secure-app .
+[+] Building 0.2s (6/6) FINISHED                                                                                                                                         docker:default
+ => [internal] load build definition from Dockerfile                                                                                                                               0.0s
+ => => transferring dockerfile: 93B                                                                                                                                                0.0s
+ => [internal] load metadata for docker.io/library/alpine:latest                                                                                                                   0.0s
+ => [internal] load .dockerignore                                                                                                                                                  0.0s
+ => => transferring context: 2B                                                                                                                                                    0.0s
+ => [1/2] FROM docker.io/library/alpine:latest                                                                                                                                     0.0s
+ => CACHED [2/2] RUN adduser -D -u 1000 myuser                                                                                                                                     0.0s
+ => exporting to image                                                                                                                                                             0.0s
+ => => exporting layers                                                                                                                                                            0.0s
+ => => writing image sha256:f91843b1f6c60ff6b8d68e2bd9e273b289ceca9d819bb5f5ef47e9b8539e6810                                                                                       0.0s
+ => => naming to docker.io/library/secure-app                                                                                                                                      0.0s
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker run -it --rm secure-app whoami  # Debe mostrar "appuser"
+myuser
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker run -it --rm --read-only alpine sh
+/ # touch /tmp/test  # Error: Read-only file system
+touch: /tmp/test: Read-only file system
+/ # docker run -it --rm --cap-drop=ALL --cap-add=CHOWN alpine chown nobody /
+sh: docker: not found
+/ # exit
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker run -it --rm --cap-drop=ALL --cap-add=CHOWN alpine chown nobody /
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker run -it --rm --read-only alpine sh
+/ # ls
+bin    dev    etc    home   lib    media  mnt    opt    proc   root   run    sbin   srv    sys    tmp    usr    var
+/ # cd usr
+/usr # ls
+bin    lib    local  sbin   share
+/usr # cd ..
+/ # exit
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker scan alpine
+docker: unknown command: docker scan
+
+Run 'docker --help' for more information
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker plugin install docker/scan
+Error response from daemon: error resolving plugin reference: pull access denied, repository does not exist or may require authorization: server message: insufficient_scope: authorization failed
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ # First install snyk
+npm install -g snyk
+
+# Then authenticate
+snyk auth
+
+# Then scan the image
+snyk container test alpine
+npm ERR! code EACCES
+npm ERR! syscall mkdir
+npm ERR! path /usr/local/lib/node_modules
+npm ERR! errno -13
+npm ERR! Error: EACCES: permission denied, mkdir '/usr/local/lib/node_modules'
+npm ERR!  [Error: EACCES: permission denied, mkdir '/usr/local/lib/node_modules'] {
+npm ERR!   errno: -13,
+npm ERR!   code: 'EACCES',
+npm ERR!   syscall: 'mkdir',
+npm ERR!   path: '/usr/local/lib/node_modules'
+npm ERR! }
+npm ERR! 
+npm ERR! The operation was rejected by your operating system.
+npm ERR! It is likely you do not have the permissions to access this file as the current user
+npm ERR! 
+npm ERR! If you believe this might be a permissions issue, please double-check the
+npm ERR! permissions of the file and its containing directories, or try running
+npm ERR! the command again as root/Administrator.
+
+npm ERR! A complete log of this run can be found in:
+npm ERR!     /home/pauloenrique/.npm/_logs/2025-04-17T00_33_40_703Z-debug-0.log
+Command 'snyk' not found, did you mean:
+  command 'snek' from deb snek-bin (1.9-3)
+Try: sudo apt install <deb name>
+Command 'snyk' not found, did you mean:
+  command 'snek' from deb snek-bin (1.9-3)
+Try: sudo apt install <deb name>
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ sudo apt-get update
+sudo apt-get install --only-upgrade docker.io
+[sudo] password for pauloenrique: 
+Hit:1 http://security.ubuntu.com/ubuntu noble-security InRelease
+Hit:2 https://download.docker.com/linux/ubuntu noble InRelease                                                                          
+Hit:3 https://dl.google.com/linux/chrome/deb stable InRelease                                                                           
+Hit:4 http://archive.ubuntu.com/ubuntu noble InRelease                      
+Get:5 http://archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+Hit:6 http://archive.ubuntu.com/ubuntu noble-backports InRelease
+Get:7 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1,020 kB]
+Get:8 http://archive.ubuntu.com/ubuntu noble-updates/main Translation-en [223 kB]                                                                                                      
+Get:9 http://archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [951 kB]                                                                                                
+Get:10 http://archive.ubuntu.com/ubuntu noble-updates/restricted Translation-en [195 kB]                                                                                               
+Fetched 2,514 kB in 9s (285 kB/s)                                                                                                                                                      
+Reading package lists... Done
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+Skipping docker.io, it is not installed and only upgrades are requested.
+0 upgraded, 0 newly installed, 0 to remove and 8 not upgraded.
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker scan --version
+Docker version 28.0.4, build b8034c0
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ sudo apt-get install nodejs npm
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+nodejs is already the newest version (18.19.1+dfsg-6ubuntu5).
+npm is already the newest version (9.2.0~ds1-2).
+0 upgraded, 0 newly installed, 0 to remove and 8 not upgraded.
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ sudo npm install -g snyk
+npm WARN deprecated boolean@3.2.0: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+
+added 31 packages in 18s
+
+8 packages are looking for funding
+  run `npm fund` for details
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ snyk auth
+
+Now redirecting you to our auth page, go ahead and log in,
+and once the auth is complete, return to this prompt and you'll
+be ready to start using snyk.
+
+If you can't wait use this url:
+https://app.snyk.io/oauth2/authorize?access_type=offline&client_id=b56d4c2e-b9e1-4d27-8773-ad47eafb0956&code_challenge=7JlAL1Aq52ZB48EVqm2jWXJYerkSRshnUnpGf3BYNyQ&code_challenge_method=S256&cross_region_routing=true&redirect_uri=http%3A%2F%2F127.0.0.1%3A18081%2Fauthorization-code%2Fcallback&response_type=code&scope=offline_access&state=qV4o._c83IDQmQ3&version=2021-08-11~experimental
+
+Opening in existing browser session.
+Your account has been authenticated.
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker scan --version
+Docker version 28.0.4, build b8034c0
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker scan alpine
+docker: unknown command: docker scan
+
+Run 'docker --help' for more information
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ snyk container test alpine
+
+Testing alpine...
+
+Organization:      egosumscientia
+Package manager:   apk
+Project name:      docker-image|alpine
+Docker image:      alpine
+Platform:          linux/amd64
+Licenses:          enabled
+
+✔ Tested 15 dependencies for known issues, no vulnerable paths found.
+
+
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ sudo apt-get install -y wget apt-transport-https gnupg lsb-release
+wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | sudo apt-key add -
+echo deb https://aquasecurity.github.io/trivy-repo/deb $(lsb_release -sc) main | sudo tee -a /etc/apt/sources.list.d/trivy.list
+sudo apt-get update
+sudo apt-get install trivy
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+wget is already the newest version (1.21.4-1ubuntu4.1).
+wget set to manually installed.
+apt-transport-https is already the newest version (2.7.14build2).
+gnupg is already the newest version (2.4.4-2ubuntu17.2).
+lsb-release is already the newest version (12.0-2).
+lsb-release set to manually installed.
+0 upgraded, 0 newly installed, 0 to remove and 8 not upgraded.
+Warning: apt-key is deprecated. Manage keyring files in trusted.gpg.d instead (see apt-key(8)).
+OK
+deb https://aquasecurity.github.io/trivy-repo/deb noble main
+Get:1 https://aquasecurity.github.io/trivy-repo/deb noble InRelease [3,061 B]
+Hit:2 https://download.docker.com/linux/ubuntu noble InRelease                                                                                                                         
+Hit:3 https://dl.google.com/linux/chrome/deb stable InRelease                                                                                                    
+Hit:4 http://archive.ubuntu.com/ubuntu noble InRelease                                                  
+Get:5 https://aquasecurity.github.io/trivy-repo/deb noble/main amd64 Packages [369 B]
+Hit:6 http://security.ubuntu.com/ubuntu noble-security InRelease            
+Hit:7 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:8 http://archive.ubuntu.com/ubuntu noble-backports InRelease
+Fetched 3,430 B in 1s (3,623 B/s)
+Reading package lists... Done
+W: https://aquasecurity.github.io/trivy-repo/deb/dists/noble/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following NEW packages will be installed:
+  trivy
+0 upgraded, 1 newly installed, 0 to remove and 8 not upgraded.
+Need to get 44.7 MB of archives.
+After this operation, 150 MB of additional disk space will be used.
+Get:1 https://aquasecurity.github.io/trivy-repo/deb noble/main amd64 trivy amd64 0.61.0 [44.7 MB]
+Fetched 44.7 MB in 1s (31.2 MB/s)
+Selecting previously unselected package trivy.
+(Reading database ... 224521 files and directories currently installed.)
+Preparing to unpack .../trivy_0.61.0_amd64.deb ...
+Unpacking trivy (0.61.0) ...
+Setting up trivy (0.61.0) ...
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ trivy image alpine
+2025-04-16T19:37:13-05:00	INFO	[vulndb] Need to update DB
+2025-04-16T19:37:13-05:00	INFO	[vulndb] Downloading vulnerability DB...
+2025-04-16T19:37:13-05:00	INFO	[vulndb] Downloading artifact...	repo="mirror.gcr.io/aquasec/trivy-db:2"
+62.34 MiB / 62.34 MiB [-------------------------------------------------------------------------------------------------------------------------------------] 100.00% 12.74 MiB p/s 5.1s
+2025-04-16T19:37:20-05:00	INFO	[vulndb] Artifact successfully downloaded	repo="mirror.gcr.io/aquasec/trivy-db:2"
+2025-04-16T19:37:20-05:00	INFO	[vuln] Vulnerability scanning is enabled
+2025-04-16T19:37:20-05:00	INFO	[secret] Secret scanning is enabled
+2025-04-16T19:37:20-05:00	INFO	[secret] If your scanning is slow, please try '--scanners vuln' to disable secret scanning
+2025-04-16T19:37:20-05:00	INFO	[secret] Please see also https://trivy.dev/v0.61/docs/scanner/secret#recommendation for faster secret detection
+2025-04-16T19:37:21-05:00	INFO	Detected OS	family="alpine" version="3.21.3"
+2025-04-16T19:37:21-05:00	INFO	[alpine] Detecting vulnerabilities...	os_version="3.21" repository="3.21" pkg_num=15
+2025-04-16T19:37:21-05:00	INFO	Number of language-specific files	num=0
+
+Report Summary
+
+┌────────────────────────┬────────┬─────────────────┬─────────┐
+│         Target         │  Type  │ Vulnerabilities │ Secrets │
+├────────────────────────┼────────┼─────────────────┼─────────┤
+│ alpine (alpine 3.21.3) │ alpine │        0        │    -    │
+└────────────────────────┴────────┴─────────────────┴─────────┘
+Legend:
+- '-': Not scanned
+- '0': Clean (no security findings detected)
+
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker swarm init
+Error response from daemon: This node is already part of a swarm. Use "docker swarm leave" to leave this swarm and join another one.
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker swarm leave --force
+Node left the swarm.
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker swarm init
+Error response from daemon: could not choose an IP address to advertise since this system has multiple addresses on interface wlp2s0 (2800:e2:1380:1deb:eb67:a0d7:16db:64c7 and 2800:e2:1380:1deb:c3c5:9956:ada6:a763) - specify one with --advertise-addr
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ Hostname -I
+Command 'Hostname' not found, did you mean:
+  command 'hostname' from deb hostname (3.23+nmu1ubuntu1)
+Try: sudo apt install <deb name>
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ hostname -I
+192.168.1.10 192.168.122.1 172.17.0.1 172.18.0.1 2800:e2:1380:1deb:eb67:a0d7:16db:64c7 2800:e2:1380:1deb:c3c5:9956:ada6:a763 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker swarm init --advertise-addr 192.168.1.10
+Swarm initialized: current node (jr4qff93nfjqkebr3p1gd9x0a) is now a manager.
+
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-2j627rjbmtyd1r4z35p5nelyevs1o80ktuewqvr6ozgr1x8fq8-67uf6f5wmkbak63zd6c7ugki1 192.168.1.10:2377
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker node ls
+ID                            HOSTNAME                      STATUS    AVAILABILITY   MANAGER STATUS   ENGINE VERSION
+7bu0xc1i035sntncjlcf2mmzp     fedora                        Ready     Active                          28.0.4
+jr4qff93nfjqkebr3p1gd9x0a *   pauloenrique-Latitude-E7450   Ready     Active         Leader           28.0.4
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ echo "mypassword123" | docker secret create db_password -
+3k6jewdc5cr61tcwwgrmknsr5
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker service create --name secure-service --secret db_password alpine cat /run/secrets/db_password
+pw0qtecdyrdx9h6teqrpl41y4
+overall progress: 0 out of 1 tasks 
+1/1: ready     [======================================>            ] 
+verify: Detected task failure 
+^COperation continuing in background.
+context canceled
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker service create --name secure-service --secret db_password alpine sh -c "cat /run/secrets/db_password"
+Error response from daemon: rpc error: code = AlreadyExists desc = name conflicts with an existing object: service secure-service already exists
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker secre ls
+docker: unknown command: docker secre
+
+Run 'docker --help' for more information
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ echo "mysecretpassword" | docker secret create db_password -
+Error response from daemon: rpc error: code = AlreadyExists desc = secret db_password already exists
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker service rm secure-service
+secure-service
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker secret ls
+ID                          NAME          DRIVER    CREATED         UPDATED
+3k6jewdc5cr61tcwwgrmknsr5   db_password             2 minutes ago   2 minutes ago
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker secret rm db_password
+echo "mysecretpassword" | docker secret create db_password -
+db_password
+2dgqkmkxjl9flsj88ime3sd7h
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker service create \
+  --name secure-service \
+  --secret db_password \
+  alpine sh -c "cat /run/secrets/db_password && sleep 3600"
+oinfognlkwgq187e4m7bad652
+overall progress: 1 out of 1 tasks 
+1/1: running   [==================================================>] 
+verify: Service oinfognlkwgq187e4m7bad652 converged 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker service ps secure-service  # Ver el estado
+docker service logs secure-service  # Ver los logs
+ID             NAME               IMAGE           NODE                          DESIRED STATE   CURRENT STATE            ERROR     PORTS
+rlmizlpk88e5   secure-service.1   alpine:latest   pauloenrique-Latitude-E7450   Running         Running 15 seconds ago             
+secure-service.1.rlmizlpk88e5@pauloenrique-Latitude-E7450    | mysecretpassword
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker service create --name secure-service --secret db_password alpine cat /run/secrets/db_password
+Error response from daemon: rpc error: code = AlreadyExists desc = name conflicts with an existing object: service secure-service already exists
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker service rm secure-service
+secure-service
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker secret ls
+ID                          NAME          DRIVER    CREATED              UPDATED
+2dgqkmkxjl9flsj88ime3sd7h   db_password             About a minute ago   About a minute ago
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker service create --name secure-service --secret db_password alpine cat /run/secrets/db_password
+3gvc4jft3jlzshp7gg0d7q2b4
+overall progress: 0 out of 1 tasks 
+1/1: ready     [======================================>            ] 
+verify: Detected task failure 
+^COperation continuing in background.
+context canceled
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker service create \
+  --name test-secret \
+  --secret db_password \
+  --mode replicated-job \
+  alpine sh -c "cat /run/secrets/db_password"
+z31xpie9cf61g8xc0v7hzofu0
+job progress: 1 out of 1 complete [==================================================>] 
+active tasks: 0 out of 0 tasks 
+1/1: complete  [==================================================>] 
+job complete
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ docker service logs secure-service  # Debe mostrar "mypassword123"
+secure-service.1.xf4i2sdr7smk@pauloenrique-Latitude-E7450    | mysecretpassword
+secure-service.1.ycybwk12gvau@pauloenrique-Latitude-E7450    | mysecretpassword
+secure-service.1.3dpmbjxt5ous@pauloenrique-Latitude-E7450    | mysecretpassword
+secure-service.1.10xgqpp1jn12@fedora    | mysecretpassword
+secure-service.1.u618km5ctbat@fedora    | mysecretpassword
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab07$ 
+
+

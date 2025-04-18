@@ -1,0 +1,1260 @@
+pauloenrique@pauloenrique-Latitude-E7450:~$ cd Documents/Development/Docker-labs/Lab10/
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ ls
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ docker-compose down
+Removing network lab10_default
+WARNING: Network lab10_default not found.
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ docker-compose up -d --build
+Creating network "lab10_default" with the default driver
+Building debug
+[+] Building 0.6s (6/6) FINISHED                                                                                                                                         docker:default
+ => [internal] load build definition from Dockerfile.debug                                                                                                                         0.0s
+ => => transferring dockerfile: 213B                                                                                                                                               0.0s
+ => [internal] load metadata for docker.io/library/ubuntu:22.04                                                                                                                    0.5s
+ => [internal] load .dockerignore                                                                                                                                                  0.0s
+ => => transferring context: 2B                                                                                                                                                    0.0s
+ => [1/2] FROM docker.io/library/ubuntu:22.04@sha256:d80997daaa3811b175119350d84305e1ec9129e1799bba0bd1e3120da3ff52c3                                                              0.0s
+ => CACHED [2/2] RUN apt update && apt install -y     strace     tcpdump     iputils-ping     curl     procps     net-tools     nano                                               0.0s
+ => exporting to image                                                                                                                                                             0.0s
+ => => exporting layers                                                                                                                                                            0.0s
+ => => writing image sha256:3bdd0f430c1604cd4ba50c27e51c875fd8ade5203479a324069da6d536210559                                                                                       0.0s
+ => => naming to docker.io/library/lab10_debug                                                                                                                                     0.0s
+Creating debug-toolkit ... 
+Creating nginx-test    ... 
+Creating stress-ng     ... error
+Creating debug-toolkit ... done
+
+Creating nginx-test    ... error
+Creating ubuntu-top    ... done
+WARNING: Host is already in use by another container
+
+ERROR: for nginx-test  Cannot start service web: failed to set up container networking: driver failed programming external connectivity on endpoint nginx-test (a42b9f8609b202f6207e5cfe7335f2604e995c9501402912ef8ca33bfc17bc4b): failed to bind host port for 0.0.0.0:8080:172.19.0.4:80/tcp: address already in use
+
+ERROR: for stress  Cannot start service stress: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: exec: "--cpu": executable file not found in $PATH: unknown
+
+ERROR: for web  Cannot start service web: failed to set up container networking: driver failed programming external connectivity on endpoint nginx-test (a42b9f8609b202f6207e5cfe7335f2604e995c9501402912ef8ca33bfc17bc4b): failed to bind host port for 0.0.0.0:8080:172.19.0.4:80/tcp: address already in use
+ERROR: Encountered errors while bringing up the project.
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ sudo netstat -tulnp | grep 8080
+# Si hay algo, mata el proceso con kill -9 PID
+[sudo] password for pauloenrique: 
+tcp6       0      0 :::8080                 :::*                    LISTEN      1592/java           
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ docker-compose down
+Stopping ubuntu-top    ... done
+Stopping debug-toolkit ... done
+Removing ubuntu-top    ... done
+Removing stress-ng     ... done
+Removing nginx-test    ... done
+Removing debug-toolkit ... done
+Removing network lab10_default
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ docker-compose up -d --build
+Creating network "lab10_default" with the default driver
+Building debug
+[+] Building 0.9s (6/6) FINISHED                                                                                                                                         docker:default
+ => [internal] load build definition from Dockerfile.debug                                                                                                                         0.0s
+ => => transferring dockerfile: 213B                                                                                                                                               0.0s
+ => [internal] load metadata for docker.io/library/ubuntu:22.04                                                                                                                    0.8s
+ => [internal] load .dockerignore                                                                                                                                                  0.0s
+ => => transferring context: 2B                                                                                                                                                    0.0s
+ => [1/2] FROM docker.io/library/ubuntu:22.04@sha256:d80997daaa3811b175119350d84305e1ec9129e1799bba0bd1e3120da3ff52c3                                                              0.0s
+ => CACHED [2/2] RUN apt update && apt install -y     strace     tcpdump     iputils-ping     curl     procps     net-tools     nano                                               0.0s
+ => exporting to image                                                                                                                                                             0.0s
+ => => exporting layers                                                                                                                                                            0.0s
+ => => writing image sha256:3bdd0f430c1604cd4ba50c27e51c875fd8ade5203479a324069da6d536210559                                                                                       0.0s
+ => => naming to docker.io/library/lab10_debug                                                                                                                                     0.0s
+Creating nginx-test ... 
+Creating stress-ng     ... error
+Creating ubuntu-top ... 
+Creating nginx-test    ... done
+
+Creating ubuntu-top    ... done
+Creating debug-toolkit ... done
+
+ERROR: for stress  Cannot start service stress: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: error during container init: exec: "--cpu": executable file not found in $PATH: unknown
+ERROR: Encountered errors while bringing up the project.
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ # Limpia el ambiente primero
+docker-compose down --remove-orphans
+Stopping ubuntu-top    ... done
+Stopping debug-toolkit ... done
+Stopping nginx-test    ... done
+Removing ubuntu-top    ... done
+Removing debug-toolkit ... done
+Removing stress-ng     ... done
+Removing nginx-test    ... done
+Removing network lab10_default
+CONTAINER ID   NAME            CPU %     MEM USAGE / LIMIT   MEM %     NET I/O   BLOCK I/O   PIDS 
+83006a693ad6   debug-toolkit   --        -- / --             --        --        --          -- 
+d726997b6641   ubuntu-top      --        -- / --             --        --        --          -- 
+9087d843f957   nginx-test      --        -- / --             --        --        --          -- 
+7ef54bb6f924   minikube        --        -- / --             --        --        --          -- 
+ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ docker ps
+CONTAINER ID   IMAGE                                 COMMAND                  CREATED         STATUS         PORTS                                                                                                                                  NAMES
+83006a693ad6   lab10_debug                           "/bin/bash"              2 minutes ago   Up 2 minutes                                                                                                                                          debug-toolkit
+d726997b6641   ubuntu                                "sleep 1000"             2 minutes ago   Up 2 minutes                                                                                                                                          ubuntu-top
+9087d843f957   nginx                                 "/docker-entrypoint.…"   2 minutes ago   Up 2 minutes   0.0.0.0:8081->80/tcp, [::]:8081->80/tcp                                                                                                nginx-test
+7ef54bb6f924   gcr.io/k8s-minikube/kicbase:v0.0.46   "/usr/local/bin/entr…"   9 hours ago     Up 8 hours     127.0.0.1:32778->22/tcp, 127.0.0.1:32779->2376/tcp, 127.0.0.1:32780->5000/tcp, 127.0.0.1:32781->8443/tcp, 127.0.0.1:32782->32443/tcp   minikube
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ docker top
+docker: 'docker top' requires at least 1 argument
+
+Usage:  docker top CONTAINER [ps OPTIONS]
+
+See 'docker top --help' for more information
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ docker top 83006a693ad6
+UID                 PID                 PPID                C                   STIME               TTY                 TIME                CMD
+root                621234              621163              0                   18:43               pts/0               00:00:00            /bin/bash
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ docker top d726997b6641
+UID                 PID                 PPID                C                   STIME               TTY                 TIME                CMD
+root                621219              621096              0                   18:43               ?                   00:00:00            sleep 1000
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ docker top 9087d843f957
+UID                 PID                 PPID                C                   STIME               TTY                 TIME                CMD
+root                621236              621154              0                   18:43               ?                   00:00:00            nginx: master process nginx -g daemon off;
+message+            621395              621236              0                   18:43               ?                   00:00:00            nginx: worker process
+message+            621396              621236              0                   18:43               ?                   00:00:00            nginx: worker process
+message+            621397              621236              0                   18:43               ?                   00:00:00            nginx: worker process
+message+            621398              621236              0                   18:43               ?                   00:00:00            nginx: worker process
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ docker inspect 9087d843f957
+[
+    {
+        "Id": "9087d843f9576252e4770d51e5a09e399021f03fa5b9f94917c3bf8003a5dd5e",
+        "Created": "2025-04-17T23:43:58.087385413Z",
+        "Path": "/docker-entrypoint.sh",
+        "Args": [
+            "nginx",
+            "-g",
+            "daemon off;"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 621236,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2025-04-17T23:43:58.414330323Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+        },
+        "Image": "sha256:4e1b6bae1e48cdbde8e6ec3e6ee42d86ad4780156e75790465bf6fb16c551c27",
+        "ResolvConfPath": "/var/lib/docker/containers/9087d843f9576252e4770d51e5a09e399021f03fa5b9f94917c3bf8003a5dd5e/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/9087d843f9576252e4770d51e5a09e399021f03fa5b9f94917c3bf8003a5dd5e/hostname",
+        "HostsPath": "/var/lib/docker/containers/9087d843f9576252e4770d51e5a09e399021f03fa5b9f94917c3bf8003a5dd5e/hosts",
+        "LogPath": "/var/lib/docker/containers/9087d843f9576252e4770d51e5a09e399021f03fa5b9f94917c3bf8003a5dd5e/9087d843f9576252e4770d51e5a09e399021f03fa5b9f94917c3bf8003a5dd5e-json.log",
+        "Name": "/nginx-test",
+        "RestartCount": 0,
+        "Driver": "overlay2",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "docker-default",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "lab10_default",
+            "PortBindings": {
+                "80/tcp": [
+                    {
+                        "HostIp": "",
+                        "HostPort": "8081"
+                    }
+                ]
+            },
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": [],
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": null,
+            "DnsSearch": null,
+            "ExtraHosts": null,
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": null,
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": null,
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/asound",
+                "/proc/acpi",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/sys/firmware",
+                "/sys/devices/virtual/powercap",
+                "/sys/devices/system/cpu/cpu0/thermal_throttle",
+                "/sys/devices/system/cpu/cpu1/thermal_throttle",
+                "/sys/devices/system/cpu/cpu2/thermal_throttle",
+                "/sys/devices/system/cpu/cpu3/thermal_throttle"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "GraphDriver": {
+            "Data": {
+                "ID": "9087d843f9576252e4770d51e5a09e399021f03fa5b9f94917c3bf8003a5dd5e",
+                "LowerDir": "/var/lib/docker/overlay2/ab7d0c924202cf27a522c47790a98d93821bf0c9f48551637bf46a0e72051f84-init/diff:/var/lib/docker/overlay2/fd8b70704b63b08d49f1c4a9e33101d39cc55430a2dcfeba446313e090f58772/diff:/var/lib/docker/overlay2/7e175278d5109a0d5533d3677a30769c2dbd772c431388ae2c08c49a743e7fd9/diff:/var/lib/docker/overlay2/02585eda22abe3846ebf373b2d2a494772e0903f501da68e699fb3d58a8cae58/diff:/var/lib/docker/overlay2/bbf7da7503c3242cf33db50dd504c6bc9883ac77800fed3ef13a777cc5ab8c14/diff:/var/lib/docker/overlay2/0b7a8f8817a0b2bab75346bbc124eb1aa91c9803f54d84521a9234d8073a670d/diff:/var/lib/docker/overlay2/290f680b59330a21b9ab1ac1af550056693098b9f2875761256eb21b1bbb1799/diff:/var/lib/docker/overlay2/d895b5bc6d7464a22597b35527dc00c839d40bb2c8bcca229c16fbb1c324cb32/diff",
+                "MergedDir": "/var/lib/docker/overlay2/ab7d0c924202cf27a522c47790a98d93821bf0c9f48551637bf46a0e72051f84/merged",
+                "UpperDir": "/var/lib/docker/overlay2/ab7d0c924202cf27a522c47790a98d93821bf0c9f48551637bf46a0e72051f84/diff",
+                "WorkDir": "/var/lib/docker/overlay2/ab7d0c924202cf27a522c47790a98d93821bf0c9f48551637bf46a0e72051f84/work"
+            },
+            "Name": "overlay2"
+        },
+        "Mounts": [],
+        "Config": {
+            "Hostname": "9087d843f957",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "ExposedPorts": {
+                "80/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "NGINX_VERSION=1.27.5",
+                "NJS_VERSION=0.8.10",
+                "NJS_RELEASE=1~bookworm",
+                "PKG_RELEASE=1~bookworm",
+                "DYNPKG_RELEASE=1~bookworm"
+            ],
+            "Cmd": [
+                "nginx",
+                "-g",
+                "daemon off;"
+            ],
+            "Image": "nginx",
+            "Volumes": null,
+            "WorkingDir": "",
+            "Entrypoint": [
+                "/docker-entrypoint.sh"
+            ],
+            "OnBuild": null,
+            "Labels": {
+                "com.docker.compose.config-hash": "aa55699e1c093802a433155c68f138a474a456632e50d53c4a6c3b93c62670d5",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "lab10",
+                "com.docker.compose.project.config_files": "docker-compose.yml",
+                "com.docker.compose.project.working_dir": "/home/pauloenrique/Documents/Development/Docker-labs/Lab10",
+                "com.docker.compose.service": "web",
+                "com.docker.compose.version": "1.29.2",
+                "maintainer": "NGINX Docker Maintainers <docker-maint@nginx.com>"
+            },
+            "StopSignal": "SIGQUIT"
+        },
+        "NetworkSettings": {
+            "Bridge": "",
+            "SandboxID": "cbb97ad509ab3a8719de0bc98d01d3e235fc54e1b4ec5f08bc2ec9179b2061a4",
+            "SandboxKey": "/var/run/docker/netns/cbb97ad509ab",
+            "Ports": {
+                "80/tcp": [
+                    {
+                        "HostIp": "0.0.0.0",
+                        "HostPort": "8081"
+                    },
+                    {
+                        "HostIp": "::",
+                        "HostPort": "8081"
+                    }
+                ]
+            },
+            "HairpinMode": false,
+            "LinkLocalIPv6Address": "",
+            "LinkLocalIPv6PrefixLen": 0,
+            "SecondaryIPAddresses": null,
+            "SecondaryIPv6Addresses": null,
+            "EndpointID": "",
+            "Gateway": "",
+            "GlobalIPv6Address": "",
+            "GlobalIPv6PrefixLen": 0,
+            "IPAddress": "",
+            "IPPrefixLen": 0,
+            "IPv6Gateway": "",
+            "MacAddress": "",
+            "Networks": {
+                "lab10_default": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": [
+                        "9087d843f957",
+                        "web"
+                    ],
+                    "MacAddress": "da:d6:73:89:23:39",
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "d1f5bd399092102764e8aa453d85709de54770ff0f0e992b54922189d320471b",
+                    "EndpointID": "1265a587832ab02f06fda21e71f837273cd972de10462f326d41c337b0c92ef2",
+                    "Gateway": "172.19.0.1",
+                    "IPAddress": "172.19.0.2",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "nginx-test",
+                        "9087d843f957",
+                        "web"
+                    ]
+                }
+            }
+        }
+    }
+]
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ docker inspect 83006a693ad6
+[
+    {
+        "Id": "83006a693ad63c980e813e3013c47d368598c08be161c248669099948a310845",
+        "Created": "2025-04-17T23:43:58.09533705Z",
+        "Path": "/bin/bash",
+        "Args": [],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 621234,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2025-04-17T23:43:58.412292362Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+        },
+        "Image": "sha256:3bdd0f430c1604cd4ba50c27e51c875fd8ade5203479a324069da6d536210559",
+        "ResolvConfPath": "/var/lib/docker/containers/83006a693ad63c980e813e3013c47d368598c08be161c248669099948a310845/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/83006a693ad63c980e813e3013c47d368598c08be161c248669099948a310845/hostname",
+        "HostsPath": "/var/lib/docker/containers/83006a693ad63c980e813e3013c47d368598c08be161c248669099948a310845/hosts",
+        "LogPath": "/var/lib/docker/containers/83006a693ad63c980e813e3013c47d368598c08be161c248669099948a310845/83006a693ad63c980e813e3013c47d368598c08be161c248669099948a310845-json.log",
+        "Name": "/debug-toolkit",
+        "RestartCount": 0,
+        "Driver": "overlay2",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "docker-default",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "lab10_default",
+            "PortBindings": {},
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": [],
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": [
+                "SYS_PTRACE",
+                "NET_ADMIN"
+            ],
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": null,
+            "DnsSearch": null,
+            "ExtraHosts": null,
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": null,
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": null,
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/asound",
+                "/proc/acpi",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/sys/firmware",
+                "/sys/devices/virtual/powercap",
+                "/sys/devices/system/cpu/cpu0/thermal_throttle",
+                "/sys/devices/system/cpu/cpu1/thermal_throttle",
+                "/sys/devices/system/cpu/cpu2/thermal_throttle",
+                "/sys/devices/system/cpu/cpu3/thermal_throttle"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "GraphDriver": {
+            "Data": {
+                "ID": "83006a693ad63c980e813e3013c47d368598c08be161c248669099948a310845",
+                "LowerDir": "/var/lib/docker/overlay2/12dbeaf971caff450f43e7ce7e463382d92e39ac3947ca6aa8ebe4402ce99311-init/diff:/var/lib/docker/overlay2/lsozjn072eefwsr5a5brkjzl1/diff:/var/lib/docker/overlay2/eb02d65ce47cb91ddc49b32c72c37791f417e13fb993246387670d5d5b887b11/diff",
+                "MergedDir": "/var/lib/docker/overlay2/12dbeaf971caff450f43e7ce7e463382d92e39ac3947ca6aa8ebe4402ce99311/merged",
+                "UpperDir": "/var/lib/docker/overlay2/12dbeaf971caff450f43e7ce7e463382d92e39ac3947ca6aa8ebe4402ce99311/diff",
+                "WorkDir": "/var/lib/docker/overlay2/12dbeaf971caff450f43e7ce7e463382d92e39ac3947ca6aa8ebe4402ce99311/work"
+            },
+            "Name": "overlay2"
+        },
+        "Mounts": [],
+        "Config": {
+            "Hostname": "83006a693ad6",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": false,
+            "AttachStderr": false,
+            "Tty": true,
+            "OpenStdin": true,
+            "StdinOnce": false,
+            "Env": [
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin"
+            ],
+            "Cmd": [
+                "/bin/bash"
+            ],
+            "Image": "lab10_debug",
+            "Volumes": null,
+            "WorkingDir": "",
+            "Entrypoint": null,
+            "OnBuild": null,
+            "Labels": {
+                "com.docker.compose.config-hash": "5b4eb9f28105e3341b2e73a77fd37f08fd9fd037fb92cb06b97d5a5175f3c62c",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "lab10",
+                "com.docker.compose.project.config_files": "docker-compose.yml",
+                "com.docker.compose.project.working_dir": "/home/pauloenrique/Documents/Development/Docker-labs/Lab10",
+                "com.docker.compose.service": "debug",
+                "com.docker.compose.version": "1.29.2",
+                "org.opencontainers.image.ref.name": "ubuntu",
+                "org.opencontainers.image.version": "22.04"
+            }
+        },
+        "NetworkSettings": {
+            "Bridge": "",
+            "SandboxID": "3c839a7a0b302a6990bcea733cfd0b64a925602c747dfdd11b3fb52053d97309",
+            "SandboxKey": "/var/run/docker/netns/3c839a7a0b30",
+            "Ports": {},
+            "HairpinMode": false,
+            "LinkLocalIPv6Address": "",
+            "LinkLocalIPv6PrefixLen": 0,
+            "SecondaryIPAddresses": null,
+            "SecondaryIPv6Addresses": null,
+            "EndpointID": "",
+            "Gateway": "",
+            "GlobalIPv6Address": "",
+            "GlobalIPv6PrefixLen": 0,
+            "IPAddress": "",
+            "IPPrefixLen": 0,
+            "IPv6Gateway": "",
+            "MacAddress": "",
+            "Networks": {
+                "lab10_default": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": [
+                        "83006a693ad6",
+                        "debug"
+                    ],
+                    "MacAddress": "1a:b6:b3:e3:09:65",
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "d1f5bd399092102764e8aa453d85709de54770ff0f0e992b54922189d320471b",
+                    "EndpointID": "54bed124fc4b8c101adede81aeedd094afff8a55e136f3ca36fceaf18360d15c",
+                    "Gateway": "172.19.0.1",
+                    "IPAddress": "172.19.0.4",
+                    "IPPrefixLen": 16,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "debug-toolkit",
+                        "83006a693ad6",
+                        "debug"
+                    ]
+                }
+            }
+        }
+    }
+]
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ docker ps
+CONTAINER ID   IMAGE                                 COMMAND                  CREATED         STATUS         PORTS                                                                                                                                  NAMES
+83006a693ad6   lab10_debug                           "/bin/bash"              4 minutes ago   Up 4 minutes                                                                                                                                          debug-toolkit
+d726997b6641   ubuntu                                "sleep 1000"             4 minutes ago   Up 4 minutes                                                                                                                                          ubuntu-top
+9087d843f957   nginx                                 "/docker-entrypoint.…"   4 minutes ago   Up 4 minutes   0.0.0.0:8081->80/tcp, [::]:8081->80/tcp                                                                                                nginx-test
+7ef54bb6f924   gcr.io/k8s-minikube/kicbase:v0.0.46   "/usr/local/bin/entr…"   9 hours ago     Up 8 hours     127.0.0.1:32778->22/tcp, 127.0.0.1:32779->2376/tcp, 127.0.0.1:32780->5000/tcp, 127.0.0.1:32781->8443/tcp, 127.0.0.1:32782->32443/tcp   minikube
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ docker exec d726997b6641 apt update && apt install strace
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Get:1 http://archive.ubuntu.com/ubuntu noble InRelease [256 kB]
+Get:2 http://security.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+Get:3 http://archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+Get:4 http://security.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [1088 kB]
+Get:5 http://archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+Get:6 http://archive.ubuntu.com/ubuntu noble/restricted amd64 Packages [117 kB]
+Get:7 http://archive.ubuntu.com/ubuntu noble/multiverse amd64 Packages [331 kB]
+Get:8 http://archive.ubuntu.com/ubuntu noble/main amd64 Packages [1808 kB]
+Get:9 http://security.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1073 kB]
+Get:10 http://security.ubuntu.com/ubuntu noble-security/multiverse amd64 Packages [21.9 kB]
+Get:11 http://security.ubuntu.com/ubuntu noble-security/main amd64 Packages [941 kB]
+Get:12 http://archive.ubuntu.com/ubuntu noble/universe amd64 Packages [19.3 MB]
+Get:13 http://archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1371 kB]
+Get:14 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1294 kB]
+Get:15 http://archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Packages [26.4 kB]
+Get:16 http://archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [1206 kB]
+Get:17 http://archive.ubuntu.com/ubuntu noble-backports/universe amd64 Packages [31.8 kB]
+Get:18 http://archive.ubuntu.com/ubuntu noble-backports/main amd64 Packages [48.0 kB]
+Fetched 29.3 MB in 3s (9904 kB/s)
+Reading package lists...
+Building dependency tree...
+Reading state information...
+1 package can be upgraded. Run 'apt list --upgradable' to see it.
+E: Could not open lock file /var/lib/dpkg/lock-frontend - open (13: Permission denied)
+E: Unable to acquire the dpkg frontend lock (/var/lib/dpkg/lock-frontend), are you root?
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ docker exec -it d726997b6641 bash -c "apt update && apt install -y strace"
+Hit:1 http://security.ubuntu.com/ubuntu noble-security InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu noble InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu noble-backports InRelease
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+1 package can be upgraded. Run 'apt list --upgradable' to see it.
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following additional packages will be installed:
+  libunwind8
+The following NEW packages will be installed:
+  libunwind8 strace
+0 upgraded, 2 newly installed, 0 to remove and 1 not upgraded.
+Need to get 639 kB of archives.
+After this operation, 2345 kB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libunwind8 amd64 1.6.2-3build1.1 [55.3 kB]
+Get:2 http://archive.ubuntu.com/ubuntu noble/main amd64 strace amd64 6.8-0ubuntu2 [584 kB]
+Fetched 639 kB in 2s (398 kB/s) 
+debconf: delaying package configuration, since apt-utils is not installed
+Selecting previously unselected package libunwind8:amd64.
+(Reading database ... 4381 files and directories currently installed.)
+Preparing to unpack .../libunwind8_1.6.2-3build1.1_amd64.deb ...
+Unpacking libunwind8:amd64 (1.6.2-3build1.1) ...
+Selecting previously unselected package strace.
+Preparing to unpack .../strace_6.8-0ubuntu2_amd64.deb ...
+Unpacking strace (6.8-0ubuntu2) ...
+Setting up libunwind8:amd64 (1.6.2-3build1.1) ...
+Setting up strace (6.8-0ubuntu2) ...
+Processing triggers for libc-bin (2.39-0ubuntu8.4) ...
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ docker exec -it --user root d726997b6641 bash
+root@d726997b6641:/# apt update
+apt install -y strace
+exit
+Hit:1 http://security.ubuntu.com/ubuntu noble-security InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu noble InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu noble-backports InRelease
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+1 package can be upgraded. Run 'apt list --upgradable' to see it.
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+strace is already the newest version (6.8-0ubuntu2).
+0 upgraded, 0 newly installed, 0 to remove and 1 not upgraded.
+exit
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ docker exec <container_id> ps -ef
+bash: container_id: No such file or directory
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ docker ps
+CONTAINER ID   IMAGE                                 COMMAND                  CREATED         STATUS         PORTS                                                                                                                                  NAMES
+83006a693ad6   lab10_debug                           "/bin/bash"              8 minutes ago   Up 8 minutes                                                                                                                                          debug-toolkit
+d726997b6641   ubuntu                                "sleep 1000"             8 minutes ago   Up 8 minutes                                                                                                                                          ubuntu-top
+9087d843f957   nginx                                 "/docker-entrypoint.…"   8 minutes ago   Up 8 minutes   0.0.0.0:8081->80/tcp, [::]:8081->80/tcp                                                                                                nginx-test
+7ef54bb6f924   gcr.io/k8s-minikube/kicbase:v0.0.46   "/usr/local/bin/entr…"   9 hours ago     Up 8 hours     127.0.0.1:32778->22/tcp, 127.0.0.1:32779->2376/tcp, 127.0.0.1:32780->5000/tcp, 127.0.0.1:32781->8443/tcp, 127.0.0.1:32782->32443/tcp   minikube
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ docker exec ubuntu-top ps -ef
+UID          PID    PPID  C STIME TTY          TIME CMD
+root           1       0  0 23:43 ?        00:00:00 sleep 1000
+root         440       0 50 23:52 ?        00:00:00 ps -ef
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ docker exec d726997b6641 ps -ef
+UID          PID    PPID  C STIME TTY          TIME CMD
+root           1       0  0 23:43 ?        00:00:00 sleep 1000
+root         446       0 75 23:53 ?        00:00:00 ps -ef
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ docker exec -it d726997b6641 strace -p 1
+strace: attach: ptrace(PTRACE_SEIZE, 1): Operation not permitted
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ docker exec -it --cap-add=SYS_PTRACE d726997b6641 bash
+unknown flag: --cap-add
+
+Usage:  docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
+
+Run 'docker exec --help' for more information
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ docker exec -it --privileged d726997b6641 strace -p 1
+strace: Process 1 attached
+restart_syscall(<... resuming interrupted read ...>^Cstrace: Process 1 detached
+ <detached ...>
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ docker exec -it --user root d726997b6641 bash -c "apt update && apt install -y tcpdump"
+Hit:1 http://archive.ubuntu.com/ubuntu noble InRelease
+Hit:2 http://security.ubuntu.com/ubuntu noble-security InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:4 http://archive.ubuntu.com/ubuntu noble-backports InRelease
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+1 package can be upgraded. Run 'apt list --upgradable' to see it.
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following additional packages will be installed:
+  adduser dbus dbus-bin dbus-daemon dbus-session-bus-common dbus-system-bus-common ibverbs-providers libapparmor1 libdbus-1-3 libexpat1 libibverbs1 libnl-3-200 libnl-route-3-200
+  libpcap0.8t64
+Suggested packages:
+  liblocale-gettext-perl perl cron quota ecryptfs-utils default-dbus-session-bus | dbus-session-bus apparmor
+The following NEW packages will be installed:
+  adduser dbus dbus-bin dbus-daemon dbus-session-bus-common dbus-system-bus-common ibverbs-providers libapparmor1 libdbus-1-3 libexpat1 libibverbs1 libnl-3-200 libnl-route-3-200
+  libpcap0.8t64 tcpdump
+0 upgraded, 15 newly installed, 0 to remove and 1 not upgraded.
+Need to get 2109 kB of archives.
+After this operation, 6453 kB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu noble/main amd64 adduser all 3.137ubuntu1 [101 kB]
+Get:2 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libdbus-1-3 amd64 1.14.10-4ubuntu4.1 [210 kB]
+Get:3 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 dbus-bin amd64 1.14.10-4ubuntu4.1 [39.3 kB]
+Get:4 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 dbus-session-bus-common all 1.14.10-4ubuntu4.1 [80.5 kB]
+Get:5 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libapparmor1 amd64 4.0.1really4.0.1-0ubuntu0.24.04.3 [50.3 kB]
+Get:6 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libexpat1 amd64 2.6.1-2ubuntu0.3 [88.0 kB]
+Get:7 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 dbus-daemon amd64 1.14.10-4ubuntu4.1 [118 kB]
+Get:8 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 dbus-system-bus-common all 1.14.10-4ubuntu4.1 [81.6 kB]
+Get:9 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 dbus amd64 1.14.10-4ubuntu4.1 [24.3 kB]
+Get:10 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libnl-3-200 amd64 3.7.0-0.3build1.1 [55.7 kB]
+Get:11 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libnl-route-3-200 amd64 3.7.0-0.3build1.1 [189 kB]
+Get:12 http://archive.ubuntu.com/ubuntu noble/main amd64 libibverbs1 amd64 50.0-2build2 [67.8 kB]
+Get:13 http://archive.ubuntu.com/ubuntu noble/main amd64 ibverbs-providers amd64 50.0-2build2 [374 kB]
+Get:14 http://archive.ubuntu.com/ubuntu noble/main amd64 libpcap0.8t64 amd64 1.10.4-4.1ubuntu3 [151 kB]
+Get:15 http://archive.ubuntu.com/ubuntu noble/main amd64 tcpdump amd64 4.99.4-3ubuntu4 [479 kB]
+Fetched 2109 kB in 1s (1883 kB/s)
+debconf: delaying package configuration, since apt-utils is not installed
+Selecting previously unselected package adduser.
+(Reading database ... 4402 files and directories currently installed.)
+Preparing to unpack .../adduser_3.137ubuntu1_all.deb ...
+Unpacking adduser (3.137ubuntu1) ...
+Setting up adduser (3.137ubuntu1) ...
+Selecting previously unselected package libdbus-1-3:amd64.
+(Reading database ... 4450 files and directories currently installed.)
+Preparing to unpack .../00-libdbus-1-3_1.14.10-4ubuntu4.1_amd64.deb ...
+Unpacking libdbus-1-3:amd64 (1.14.10-4ubuntu4.1) ...
+Selecting previously unselected package dbus-bin.
+Preparing to unpack .../01-dbus-bin_1.14.10-4ubuntu4.1_amd64.deb ...
+Unpacking dbus-bin (1.14.10-4ubuntu4.1) ...
+Selecting previously unselected package dbus-session-bus-common.
+Preparing to unpack .../02-dbus-session-bus-common_1.14.10-4ubuntu4.1_all.deb ...
+Unpacking dbus-session-bus-common (1.14.10-4ubuntu4.1) ...
+Selecting previously unselected package libapparmor1:amd64.
+Preparing to unpack .../03-libapparmor1_4.0.1really4.0.1-0ubuntu0.24.04.3_amd64.deb ...
+Unpacking libapparmor1:amd64 (4.0.1really4.0.1-0ubuntu0.24.04.3) ...
+Selecting previously unselected package libexpat1:amd64.
+Preparing to unpack .../04-libexpat1_2.6.1-2ubuntu0.3_amd64.deb ...
+Unpacking libexpat1:amd64 (2.6.1-2ubuntu0.3) ...
+Selecting previously unselected package dbus-daemon.
+Preparing to unpack .../05-dbus-daemon_1.14.10-4ubuntu4.1_amd64.deb ...
+Unpacking dbus-daemon (1.14.10-4ubuntu4.1) ...
+Selecting previously unselected package dbus-system-bus-common.
+Preparing to unpack .../06-dbus-system-bus-common_1.14.10-4ubuntu4.1_all.deb ...
+Unpacking dbus-system-bus-common (1.14.10-4ubuntu4.1) ...
+Selecting previously unselected package dbus.
+Preparing to unpack .../07-dbus_1.14.10-4ubuntu4.1_amd64.deb ...
+Unpacking dbus (1.14.10-4ubuntu4.1) ...
+Selecting previously unselected package libnl-3-200:amd64.
+Preparing to unpack .../08-libnl-3-200_3.7.0-0.3build1.1_amd64.deb ...
+Unpacking libnl-3-200:amd64 (3.7.0-0.3build1.1) ...
+Selecting previously unselected package libnl-route-3-200:amd64.
+Preparing to unpack .../09-libnl-route-3-200_3.7.0-0.3build1.1_amd64.deb ...
+Unpacking libnl-route-3-200:amd64 (3.7.0-0.3build1.1) ...
+Selecting previously unselected package libibverbs1:amd64.
+Preparing to unpack .../10-libibverbs1_50.0-2build2_amd64.deb ...
+Unpacking libibverbs1:amd64 (50.0-2build2) ...
+Selecting previously unselected package ibverbs-providers:amd64.
+Preparing to unpack .../11-ibverbs-providers_50.0-2build2_amd64.deb ...
+Unpacking ibverbs-providers:amd64 (50.0-2build2) ...
+Selecting previously unselected package libpcap0.8t64:amd64.
+Preparing to unpack .../12-libpcap0.8t64_1.10.4-4.1ubuntu3_amd64.deb ...
+Unpacking libpcap0.8t64:amd64 (1.10.4-4.1ubuntu3) ...
+Selecting previously unselected package tcpdump.
+Preparing to unpack .../13-tcpdump_4.99.4-3ubuntu4_amd64.deb ...
+Unpacking tcpdump (4.99.4-3ubuntu4) ...
+Setting up libexpat1:amd64 (2.6.1-2ubuntu0.3) ...
+Setting up libapparmor1:amd64 (4.0.1really4.0.1-0ubuntu0.24.04.3) ...
+Setting up libdbus-1-3:amd64 (1.14.10-4ubuntu4.1) ...
+Setting up dbus-session-bus-common (1.14.10-4ubuntu4.1) ...
+Setting up libnl-3-200:amd64 (3.7.0-0.3build1.1) ...
+Setting up dbus-system-bus-common (1.14.10-4ubuntu4.1) ...
+Setting up dbus-bin (1.14.10-4ubuntu4.1) ...
+Setting up dbus-daemon (1.14.10-4ubuntu4.1) ...
+Setting up libnl-route-3-200:amd64 (3.7.0-0.3build1.1) ...
+Setting up dbus (1.14.10-4ubuntu4.1) ...
+Setting up libibverbs1:amd64 (50.0-2build2) ...
+Setting up ibverbs-providers:amd64 (50.0-2build2) ...
+Setting up libpcap0.8t64:amd64 (1.10.4-4.1ubuntu3) ...
+Setting up tcpdump (4.99.4-3ubuntu4) ...
+Processing triggers for libc-bin (2.39-0ubuntu8.4) ...
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ docker ps
+CONTAINER ID   IMAGE                                 COMMAND                  CREATED          STATUS          PORTS                                                                                                                                  NAMES
+83006a693ad6   lab10_debug                           "/bin/bash"              12 minutes ago   Up 12 minutes                                                                                                                                          debug-toolkit
+d726997b6641   ubuntu                                "sleep 1000"             12 minutes ago   Up 12 minutes                                                                                                                                          ubuntu-top
+9087d843f957   nginx                                 "/docker-entrypoint.…"   12 minutes ago   Up 12 minutes   0.0.0.0:8081->80/tcp, [::]:8081->80/tcp                                                                                                nginx-test
+7ef54bb6f924   gcr.io/k8s-minikube/kicbase:v0.0.46   "/usr/local/bin/entr…"   9 hours ago      Up 8 hours      127.0.0.1:32778->22/tcp, 127.0.0.1:32779->2376/tcp, 127.0.0.1:32780->5000/tcp, 127.0.0.1:32781->8443/tcp, 127.0.0.1:32782->32443/tcp   minikube
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ docker exec -it --privileged d726997b6641 tcpdump -i any -vvv
+tcpdump: data link type LINUX_SLL2
+tcpdump: listening on any, link-type LINUX_SLL2 (Linux cooked v2), snapshot length 262144 bytes
+23:57:00.498045 eth0  B   IP (tos 0x0, ttl 64, id 31452, offset 0, flags [DF], proto UDP (17), length 72)
+    pauloenrique-Latitude-E7450.57621 > 172.19.255.255.57621: [bad udp cksum 0x586d -> 0x7eb4!] UDP, length 44
+23:57:00.518535 eth0  B   IP (tos 0x0, ttl 64, id 31456, offset 0, flags [DF], proto UDP (17), length 72)
+    pauloenrique-Latitude-E7450.57621 > 172.19.255.255.57621: [bad udp cksum 0x586d -> 0x7eb4!] UDP, length 44
+23:57:00.600283 lo    In  IP (tos 0x0, ttl 64, id 11017, offset 0, flags [DF], proto UDP (17), length 84)
+    localhost.48951 > localhost.59452: [bad udp cksum 0xfe5d -> 0xd7bf!] UDP, length 56
+23:57:00.623403 lo    In  IP (tos 0x0, ttl 64, id 32968, offset 0, flags [DF], proto UDP (17), length 143)
+    localhost.53 > localhost.48951: [bad udp cksum 0xfe98 -> 0x2335!] 8421 NXDomain q: PTR? 255.255.19.172.in-addr.arpa. 0/1/1 ns: 19.172.in-addr.arpa. [3h] SOA localhost. nobody.invalid. 1 3600 1200 604800 10800 ar: . OPT UDPsize=65494 (115)
+23:57:00.623839 lo    In  IP (tos 0x0, ttl 64, id 34733, offset 0, flags [DF], proto UDP (17), length 80)
+    localhost.60642 > localhost.59452: [bad udp cksum 0xfe59 -> 0x71c7!] UDP, length 52
+23:57:00.649263 lo    In  IP (tos 0x0, ttl 64, id 32983, offset 0, flags [DF], proto UDP (17), length 168)
+    localhost.53 > localhost.60642: [bad udp cksum 0xfeb1 -> 0x2253!] 51111*$ q: PTR? 1.0.19.172.in-addr.arpa. 2/0/1 1.0.19.172.in-addr.arpa. [0s] PTR pauloenrique-Latitude-E7450., 1.0.19.172.in-addr.arpa. [0s] PTR pauloenrique-Latitude-E7450.local. ar: . OPT UDPsize=65494 (140)
+23:57:00.705129 lo    In  IP (tos 0x0, ttl 64, id 59217, offset 0, flags [DF], proto UDP (17), length 80)
+    localhost.50991 > localhost.59452: [bad udp cksum 0xfe59 -> 0x1dff!] UDP, length 52
+23:57:00.705777 lo    In  IP (tos 0x0, ttl 64, id 33017, offset 0, flags [DF], proto UDP (17), length 103)
+    localhost.53 > localhost.50991: [bad udp cksum 0xfe70 -> 0x41ba!] 59014*$ q: PTR? 11.0.0.127.in-addr.arpa. 1/0/1 11.0.0.127.in-addr.arpa. [0s] PTR localhost. ar: . OPT UDPsize=65494 (75)
+23:57:00.978835 eth0  M   IP (tos 0x0, ttl 1, id 29942, offset 0, flags [DF], proto UDP (17), length 200)
+    pauloenrique-Latitude-E7450.48386 > 239.255.255.250.1900: [bad udp cksum 0x9cd4 -> 0xffc7!] UDP, length 172
+23:57:00.988464 eth0  M   IP (tos 0x0, ttl 1, id 29949, offset 0, flags [DF], proto UDP (17), length 196)
+    pauloenrique-Latitude-E7450.33789 > 239.255.255.250.1900: [bad udp cksum 0x9cd0 -> 0xec89!] UDP, length 168
+23:57:01.016116 lo    In  IP (tos 0x0, ttl 64, id 45993, offset 0, flags [DF], proto UDP (17), length 85)
+    localhost.42866 > localhost.59452: [bad udp cksum 0xfe5e -> 0xcbe6!] UDP, length 57
+23:57:01.116184 lo    In  IP (tos 0x0, ttl 64, id 33341, offset 0, flags [DF], proto UDP (17), length 142)
+    localhost.53 > localhost.42866: [bad udp cksum 0xfe97 -> 0x7eb6!] 55482 NXDomain q: PTR? 250.255.255.239.in-addr.arpa. 0/1/1 ns: 239.in-addr.arpa. [15m] SOA sns.dns.icann.org. noc.dns.icann.org. 2022091320 7200 3600 604800 3600 ar: . OPT UDPsize=65494 (114)
+23:57:01.979562 eth0  M   IP (tos 0x0, ttl 1, id 30894, offset 0, flags [DF], proto UDP (17), length 200)
+    pauloenrique-Latitude-E7450.48386 > 239.255.255.250.1900: [bad udp cksum 0x9cd4 -> 0xffc7!] UDP, length 172
+23:57:01.988674 eth0  M   IP (tos 0x0, ttl 1, id 30899, offset 0, flags [DF], proto UDP (17), length 196)
+    pauloenrique-Latitude-E7450.33789 > 239.255.255.250.1900: [bad udp cksum 0x9cd0 -> 0xec89!] UDP, length 168
+23:57:02.980786 eth0  M   IP (tos 0x0, ttl 1, id 31738, offset 0, flags [DF], proto UDP (17), length 200)
+    pauloenrique-Latitude-E7450.48386 > 239.255.255.250.1900: [bad udp cksum 0x9cd4 -> 0xffc7!] UDP, length 172
+23:57:02.989390 eth0  M   IP (tos 0x0, ttl 1, id 31743, offset 0, flags [DF], proto UDP (17), length 196)
+    pauloenrique-Latitude-E7450.33789 > 239.255.255.250.1900: [bad udp cksum 0x9cd0 -> 0xec89!] UDP, length 168
+23:57:03.550771 eth0  B   IP (tos 0x0, ttl 64, id 34411, offset 0, flags [DF], proto UDP (17), length 72)
+    pauloenrique-Latitude-E7450.57621 > 172.19.255.255.57621: [bad udp cksum 0x586d -> 0x7eb4!] UDP, length 44
+23:57:03.981967 eth0  M   IP (tos 0x0, ttl 1, id 31851, offset 0, flags [DF], proto UDP (17), length 200)
+    pauloenrique-Latitude-E7450.48386 > 239.255.255.250.1900: [bad udp cksum 0x9cd4 -> 0xffc7!] UDP, length 172
+23:57:03.990450 eth0  M   IP (tos 0x0, ttl 1, id 31855, offset 0, flags [DF], proto UDP (17), length 196)
+    pauloenrique-Latitude-E7450.33789 > 239.255.255.250.1900: [bad udp cksum 0x9cd0 -> 0xec89!] UDP, length 168
+23:57:33.574736 eth0  B   IP (tos 0x0, ttl 64, id 47638, offset 0, flags [DF], proto UDP (17), length 72)
+    pauloenrique-Latitude-E7450.57621 > 172.19.255.255.57621: [bad udp cksum 0x586d -> 0x7eb4!] UDP, length 44
+23:58:03.582726 eth0  B   IP (tos 0x0, ttl 64, id 8173, offset 0, flags [DF], proto UDP (17), length 72)
+    pauloenrique-Latitude-E7450.57621 > 172.19.255.255.57621: [bad udp cksum 0x586d -> 0x7eb4!] UDP, length 44
+23:58:07.484727 eth0  M   IP (tos 0x0, ttl 255, id 64176, offset 0, flags [DF], proto UDP (17), length 73)
+    pauloenrique-Latitude-E7450.5353 > mdns.mcast.net.5353: [bad udp cksum 0x8d56 -> 0x2163!] 0 PTR (QM)? _spotify-connect._tcp.local. (45)
+23:58:07.485063 eth0  M   IP6 (flowlabel 0xac3c4, hlim 255, next-header UDP (17) payload length: 53) pauloenrique-Latitude-E7450.5353 > ff02::fb.5353: [bad udp cksum 0xdb16 -> 0xd3a2!] 0 PTR (QM)? _spotify-connect._tcp.local. (45)
+23:58:07.485161 eth0  M   IP6 (flowlabel 0x691ad, hlim 255, next-header UDP (17) payload length: 53) pauloenrique-Latitude-E7450.5353 > ff02::fb.5353: [bad udp cksum 0x17fd -> 0x96bc!] 0 PTR (QM)? _spotify-connect._tcp.local. (45)
+23:58:07.576103 lo    In  IP (tos 0x0, ttl 64, id 65092, offset 0, flags [DF], proto UDP (17), length 81)
+    localhost.44132 > localhost.59452: [bad udp cksum 0xfe5a -> 0xfa99!] UDP, length 53
+23:58:07.678674 lo    In  IP (tos 0x0, ttl 64, id 8084, offset 0, flags [DF], proto UDP (17), length 109)
+    localhost.53 > localhost.44132: [bad udp cksum 0xfe76 -> 0x292d!] 5264 q: PTR? 251.0.0.224.in-addr.arpa. 1/0/1 251.0.0.224.in-addr.arpa. [5h43m49s] PTR mdns.mcast.net. ar: . OPT UDPsize=65494 (81)
+23:58:07.678924 lo    In  IP (tos 0x0, ttl 64, id 4169, offset 0, flags [DF], proto UDP (17), length 129)
+    localhost.56160 > localhost.59452: [bad udp cksum 0xfe8a -> 0x430d!] UDP, length 101
+23:58:07.721018 eth0  M   IP (tos 0x0, ttl 255, id 39611, offset 0, flags [DF], proto UDP (17), length 153)
+    pauloenrique-Latitude-E7450.37267 > 239.255.255.250.1900: [bad udp cksum 0x9ca5 -> 0x9c4c!] UDP, length 125
+23:58:07.875037 lo    In  IP (tos 0x0, ttl 64, id 8209, offset 0, flags [DF], proto UDP (17), length 193)
+    localhost.53 > localhost.56160: [bad udp cksum 0xfeca -> 0x131e!] 44513 NXDomain q: PTR? b.f.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.2.0.f.f.ip6.arpa. 0/1/1 ns: ip6.arpa. [59s] SOA b.ip6-servers.arpa. nstld.iana.org. 2024122340 1800 900 604800 3600 ar: . OPT UDPsize=65494 (165)
+23:58:07.875663 lo    In  IP (tos 0x0, ttl 64, id 10412, offset 0, flags [DF], proto UDP (17), length 129)
+    localhost.45837 > localhost.59452: [bad udp cksum 0xfe8a -> 0x2c73!] UDP, length 101
+23:58:07.879054 lo    In  IP (tos 0x0, ttl 64, id 8210, offset 0, flags [DF], proto UDP (17), length 217)
+    localhost.53 > localhost.45837: [bad udp cksum 0xfee2 -> 0x4596!] 60273*$ q: PTR? f.1.d.c.1.7.e.f.f.f.7.0.1.c.8.0.0.0.0.0.0.0.0.0.0.0.0.0.0.8.e.f.ip6.arpa. 2/0/1 f.1.d.c.1.7.e.f.f.f.7.0.1.c.8.0.0.0.0.0.0.0.0.0.0.0.0.0.0.8.e.f.ip6.arpa. [0s] PTR pauloenrique-Latitude-E7450., f.1.d.c.1.7.e.f.f.f.7.0.1.c.8.0.0.0.0.0.0.0.0.0.0.0.0.0.0.8.e.f.ip6.arpa. [0s] PTR pauloenrique-Latitude-E7450.local. ar: . OPT UDPsize=65494 (189)
+23:58:07.879415 lo    In  IP (tos 0x0, ttl 64, id 31849, offset 0, flags [DF], proto UDP (17), length 129)
+    localhost.42893 > localhost.59452: [bad udp cksum 0xfe8a -> 0x22f6!] UDP, length 101
+23:58:07.880681 lo    In  IP (tos 0x0, ttl 64, id 8211, offset 0, flags [DF], proto UDP (17), length 217)
+    localhost.53 > localhost.42893: [bad udp cksum 0xfee2 -> 0x3c19!] 238*$ q: PTR? 2.2.4.2.1.9.e.f.f.f.9.7.4.8.c.7.0.0.0.0.0.0.0.0.0.0.0.0.0.8.e.f.ip6.arpa. 2/0/1 2.2.4.2.1.9.e.f.f.f.9.7.4.8.c.7.0.0.0.0.0.0.0.0.0.0.0.0.0.8.e.f.ip6.arpa. [0s] PTR pauloenrique-Latitude-E7450., 2.2.4.2.1.9.e.f.f.f.9.7.4.8.c.7.0.0.0.0.0.0.0.0.0.0.0.0.0.8.e.f.ip6.arpa. [0s] PTR pauloenrique-Latitude-E7450.local. ar: . OPT UDPsize=65494 (189)
+23:58:22.162743 lo    In  IP (tos 0x0, ttl 64, id 53075, offset 0, flags [DF], proto UDP (17), length 75)
+    localhost.44707 > localhost.59452: [bad udp cksum 0xfe54 -> 0xd990!] UDP, length 47
+23:58:22.163209 lo    In  IP (tos 0x0, ttl 64, id 60213, offset 0, flags [DF], proto UDP (17), length 76)
+    localhost.52195 > localhost.59452: [bad udp cksum 0xfe55 -> 0x3ef7!] UDP, length 48
+23:58:22.195066 lo    In  IP (tos 0x0, ttl 64, id 22004, offset 0, flags [DF], proto UDP (17), length 172)
+    localhost.53 > localhost.52195: [bad udp cksum 0xfeb5 -> 0x93a4!] 28292 q: A? security.ubuntu.com. 6/0/1 security.ubuntu.com. [1s] A 91.189.91.82, security.ubuntu.com. [1s] A 185.125.190.83, security.ubuntu.com. [1s] A 185.125.190.81, security.ubuntu.com. [1s] A 185.125.190.82, security.ubuntu.com. [1s] A 91.189.91.81, security.ubuntu.com. [1s] A 91.189.91.83 ar: . OPT UDPsize=65494 (144)
+23:58:22.195264 eth0  Out IP (tos 0x0, ttl 64, id 6858, offset 0, flags [DF], proto TCP (6), length 60)
+    d726997b6641.54814 > ubuntu-mirror-2.ps6.canonical.com.80: Flags [S], cksum 0x6354 (incorrect -> 0x37f1), seq 358475820, win 64240, options [mss 1460,sackOK,TS val 340707761 ecr 0,nop,wscale 7], length 0
+23:58:22.240329 lo    In  IP (tos 0x0, ttl 64, id 53071, offset 0, flags [DF], proto UDP (17), length 82)
+    localhost.54141 > localhost.59452: [bad udp cksum 0xfe5b -> 0x9b73!] UDP, length 54
+23:58:22.277067 lo    In  IP (tos 0x0, ttl 64, id 22067, offset 0, flags [DF], proto UDP (17), length 171)
+    localhost.53 > localhost.44707: [bad udp cksum 0xfeb4 -> 0x0afe!] 16756 q: A? archive.ubuntu.com. 6/0/1 archive.ubuntu.com. [1m] A 91.189.91.83, archive.ubuntu.com. [1m] A 91.189.91.81, archive.ubuntu.com. [1m] A 91.189.91.82, archive.ubuntu.com. [1m] A 185.125.190.83, archive.ubuntu.com. [1m] A 185.125.190.82, archive.ubuntu.com. [1m] A 185.125.190.81 ar: . OPT UDPsize=65494 (143)
+23:58:22.277271 eth0  Out IP (tos 0x0, ttl 64, id 60526, offset 0, flags [DF], proto TCP (6), length 60)
+    d726997b6641.55062 > ubuntu-mirror-3.ps6.canonical.com.80: Flags [S], cksum 0x6355 (incorrect -> 0x133d), seq 3381420348, win 64240, options [mss 1460,sackOK,TS val 1337623745 ecr 0,nop,wscale 7], length 0
+23:58:22.304534 eth0  In  IP (tos 0x48, ttl 44, id 0, offset 0, flags [DF], proto TCP (6), length 60)
+    ubuntu-mirror-2.ps6.canonical.com.80 > d726997b6641.54814: Flags [S.], cksum 0x4009 (correct), seq 138940155, ack 358475821, win 65535, options [mss 1460,sackOK,TS val 4148356154 ecr 340707761,nop,wscale 14], length 0
+23:58:22.304567 eth0  Out IP (tos 0x0, ttl 64, id 6859, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.54814 > ubuntu-mirror-2.ps6.canonical.com.80: Flags [.], cksum 0x634c (incorrect -> 0x6c79), seq 1, ack 1, win 502, options [nop,nop,TS val 340707870 ecr 4148356154], length 0
+23:58:22.304871 eth0  Out IP (tos 0x0, ttl 64, id 6860, offset 0, flags [DF], proto TCP (6), length 268)
+    d726997b6641.54814 > ubuntu-mirror-2.ps6.canonical.com.80: Flags [P.], cksum 0x6424 (incorrect -> 0xc551), seq 1:217, ack 1, win 502, options [nop,nop,TS val 340707870 ecr 4148356154], length 216: HTTP, length: 216
+	GET /ubuntu/dists/noble-security/InRelease HTTP/1.1
+	Host: security.ubuntu.com
+	Cache-Control: max-age=0
+	Accept: text/*
+	If-Modified-Since: Thu, 17 Apr 2025 14:25:23 GMT
+	User-Agent: Debian APT-HTTP/1.3 (2.7.14)
+	
+23:58:22.361040 lo    In  IP (tos 0x0, ttl 64, id 22110, offset 0, flags [DF], proto UDP (17), length 129)
+    localhost.53 > localhost.54141: [bad udp cksum 0xfe8a -> 0x2766!] 31770 q: PTR? 82.91.189.91.in-addr.arpa. 1/0/1 82.91.189.91.in-addr.arpa. [1h] PTR ubuntu-mirror-2.ps6.canonical.com. ar: . OPT UDPsize=65494 (101)
+23:58:22.361650 lo    In  IP (tos 0x0, ttl 64, id 21267, offset 0, flags [DF], proto UDP (17), length 82)
+    localhost.37648 > localhost.59452: [bad udp cksum 0xfe5b -> 0xa3c5!] UDP, length 54
+23:58:22.370351 eth0  In  IP (tos 0x0, ttl 52, id 0, offset 0, flags [DF], proto TCP (6), length 60)
+    ubuntu-mirror-3.ps6.canonical.com.80 > d726997b6641.55062: Flags [S.], cksum 0xe69e (correct), seq 2915293508, ack 3381420349, win 65535, options [mss 1460,sackOK,TS val 3014716605 ecr 1337623745,nop,wscale 14], length 0
+23:58:22.370377 eth0  Out IP (tos 0x0, ttl 64, id 60527, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.55062 > ubuntu-mirror-3.ps6.canonical.com.80: Flags [.], cksum 0x634d (incorrect -> 0x131f), seq 1, ack 1, win 502, options [nop,nop,TS val 1337623838 ecr 3014716605], length 0
+23:58:22.370625 eth0  Out IP (tos 0x0, ttl 64, id 60528, offset 0, flags [DF], proto TCP (6), length 258)
+    d726997b6641.55062 > ubuntu-mirror-3.ps6.canonical.com.80: Flags [P.], cksum 0x641b (incorrect -> 0x9d17), seq 1:207, ack 1, win 502, options [nop,nop,TS val 1337623838 ecr 3014716605], length 206: HTTP, length: 206
+	GET /ubuntu/dists/noble/InRelease HTTP/1.1
+	Host: archive.ubuntu.com
+	Cache-Control: max-age=0
+	Accept: text/*
+	If-Modified-Since: Thu, 25 Apr 2024 15:11:21 GMT
+	User-Agent: Debian APT-HTTP/1.3 (2.7.14)
+	
+23:58:22.412091 eth0  In  IP (tos 0x48, ttl 44, id 31273, offset 0, flags [DF], proto TCP (6), length 52)
+    ubuntu-mirror-2.ps6.canonical.com.80 > d726997b6641.54814: Flags [.], cksum 0x6d27 (correct), seq 1, ack 217, win 5, options [nop,nop,TS val 4148356261 ecr 340707870], length 0
+23:58:22.412094 eth0  In  IP (tos 0x48, ttl 44, id 31274, offset 0, flags [DF], proto TCP (6), length 346)
+    ubuntu-mirror-2.ps6.canonical.com.80 > d726997b6641.54814: Flags [P.], cksum 0x393b (correct), seq 1:295, ack 217, win 5, options [nop,nop,TS val 4148356261 ecr 340707870], length 294: HTTP, length: 294
+	HTTP/1.1 304 Not Modified
+	Date: Thu, 17 Apr 2025 23:58:22 GMT
+	Server: Apache/2.4.52 (Ubuntu)
+	Last-Modified: Thu, 17 Apr 2025 14:25:23 GMT
+	ETag: "1ecaf-632fa2c1a6868"
+	Accept-Ranges: bytes
+	Cache-Control: max-age=0, proxy-revalidate, s-maxage=3300
+	Expires: Thu, 17 Apr 2025 23:58:22 GMT
+	
+23:58:22.412118 eth0  Out IP (tos 0x0, ttl 64, id 6861, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.54814 > ubuntu-mirror-2.ps6.canonical.com.80: Flags [.], cksum 0x634c (incorrect -> 0x69a5), seq 217, ack 295, win 501, options [nop,nop,TS val 340707978 ecr 4148356261], length 0
+23:58:22.462590 eth0  In  IP (tos 0x48, ttl 44, id 32638, offset 0, flags [DF], proto TCP (6), length 52)
+    ubuntu-mirror-3.ps6.canonical.com.80 > d726997b6641.55062: Flags [.], cksum 0x13e8 (correct), seq 1, ack 207, win 5, options [nop,nop,TS val 3014716695 ecr 1337623838], length 0
+23:58:22.462594 eth0  In  IP (tos 0x48, ttl 44, id 32639, offset 0, flags [DF], proto TCP (6), length 346)
+    ubuntu-mirror-3.ps6.canonical.com.80 > d726997b6641.55062: Flags [P.], cksum 0x142d (correct), seq 1:295, ack 207, win 5, options [nop,nop,TS val 3014716695 ecr 1337623838], length 294: HTTP, length: 294
+	HTTP/1.1 304 Not Modified
+	Date: Thu, 17 Apr 2025 23:58:22 GMT
+	Server: Apache/2.4.52 (Ubuntu)
+	Last-Modified: Thu, 25 Apr 2024 15:11:21 GMT
+	ETag: "3e76a-616ed332a1b79"
+	Accept-Ranges: bytes
+	Cache-Control: max-age=0, proxy-revalidate, s-maxage=3300
+	Expires: Thu, 17 Apr 2025 23:58:22 GMT
+	
+23:58:22.462629 eth0  Out IP (tos 0x0, ttl 64, id 60529, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.55062 > ubuntu-mirror-3.ps6.canonical.com.80: Flags [.], cksum 0x634d (incorrect -> 0x1076), seq 207, ack 295, win 501, options [nop,nop,TS val 1337623930 ecr 3014716695], length 0
+23:58:22.463134 eth0  Out IP (tos 0x0, ttl 64, id 60530, offset 0, flags [DF], proto TCP (6), length 266)
+    d726997b6641.55062 > ubuntu-mirror-3.ps6.canonical.com.80: Flags [P.], cksum 0x6423 (incorrect -> 0xd1fc), seq 207:421, ack 295, win 501, options [nop,nop,TS val 1337623931 ecr 3014716695], length 214: HTTP, length: 214
+	GET /ubuntu/dists/noble-updates/InRelease HTTP/1.1
+	Host: archive.ubuntu.com
+	Cache-Control: max-age=0
+	Accept: text/*
+	If-Modified-Since: Thu, 17 Apr 2025 22:45:43 GMT
+	User-Agent: Debian APT-HTTP/1.3 (2.7.14)
+	
+23:58:22.535841 lo    In  IP (tos 0x0, ttl 64, id 22258, offset 0, flags [DF], proto UDP (17), length 129)
+    localhost.53 > localhost.37648: [bad udp cksum 0xfe8a -> 0x2eb8!] 45877 q: PTR? 83.91.189.91.in-addr.arpa. 1/0/1 83.91.189.91.in-addr.arpa. [1h] PTR ubuntu-mirror-3.ps6.canonical.com. ar: . OPT UDPsize=65494 (101)
+23:58:22.575580 eth0  In  IP (tos 0x48, ttl 44, id 32640, offset 0, flags [DF], proto TCP (6), length 346)
+    ubuntu-mirror-3.ps6.canonical.com.80 > d726997b6641.55062: Flags [P.], cksum 0xdf9b (correct), seq 295:589, ack 421, win 5, options [nop,nop,TS val 3014716800 ecr 1337623931], length 294: HTTP, length: 294
+	HTTP/1.1 304 Not Modified
+	Date: Thu, 17 Apr 2025 23:58:22 GMT
+	Server: Apache/2.4.52 (Ubuntu)
+	Last-Modified: Thu, 17 Apr 2025 22:45:43 GMT
+	ETag: "1ecad-6330129721df4"
+	Accept-Ranges: bytes
+	Cache-Control: max-age=0, proxy-revalidate, s-maxage=3300
+	Expires: Thu, 17 Apr 2025 23:58:22 GMT
+	
+23:58:22.575853 eth0  Out IP (tos 0x0, ttl 64, id 60531, offset 0, flags [DF], proto TCP (6), length 268)
+    d726997b6641.55062 > ubuntu-mirror-3.ps6.canonical.com.80: Flags [P.], cksum 0x6425 (incorrect -> 0x76bd), seq 421:637, ack 589, win 501, options [nop,nop,TS val 1337624043 ecr 3014716800], length 216: HTTP, length: 216
+	GET /ubuntu/dists/noble-backports/InRelease HTTP/1.1
+	Host: archive.ubuntu.com
+	Cache-Control: max-age=0
+	Accept: text/*
+	If-Modified-Since: Wed, 16 Apr 2025 02:08:45 GMT
+	User-Agent: Debian APT-HTTP/1.3 (2.7.14)
+	
+23:58:22.663687 eth0  In  IP (tos 0x48, ttl 44, id 32641, offset 0, flags [DF], proto TCP (6), length 346)
+    ubuntu-mirror-3.ps6.canonical.com.80 > d726997b6641.55062: Flags [P.], cksum 0x18e3 (correct), seq 589:883, ack 637, win 5, options [nop,nop,TS val 3014716898 ecr 1337624043], length 294: HTTP, length: 294
+	HTTP/1.1 304 Not Modified
+	Date: Thu, 17 Apr 2025 23:58:22 GMT
+	Server: Apache/2.4.52 (Ubuntu)
+	Last-Modified: Wed, 16 Apr 2025 02:08:45 GMT
+	ETag: "1ecdd-632dbc3e0b6e3"
+	Accept-Ranges: bytes
+	Cache-Control: max-age=0, proxy-revalidate, s-maxage=3300
+	Expires: Thu, 17 Apr 2025 23:58:22 GMT
+	
+23:58:22.703900 eth0  Out IP (tos 0x0, ttl 64, id 60532, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.55062 > ubuntu-mirror-3.ps6.canonical.com.80: Flags [.], cksum 0x634d (incorrect -> 0x0abf), seq 637, ack 883, win 501, options [nop,nop,TS val 1337624172 ecr 3014716898], length 0
+23:58:22.723936 eth0  Out IP (tos 0x0, ttl 64, id 6862, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.54814 > ubuntu-mirror-2.ps6.canonical.com.80: Flags [F.], cksum 0x634c (incorrect -> 0x686c), seq 217, ack 295, win 501, options [nop,nop,TS val 340708290 ecr 4148356261], length 0
+23:58:22.724869 eth0  Out IP (tos 0x0, ttl 64, id 60533, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.55062 > ubuntu-mirror-3.ps6.canonical.com.80: Flags [F.], cksum 0x634d (incorrect -> 0x0aaa), seq 637, ack 883, win 501, options [nop,nop,TS val 1337624192 ecr 3014716898], length 0
+23:58:22.813480 eth0  In  IP (tos 0x0, ttl 52, id 32642, offset 0, flags [DF], proto TCP (6), length 52)
+    ubuntu-mirror-3.ps6.canonical.com.80 > d726997b6641.55062: Flags [F.], cksum 0x0c03 (correct), seq 883, ack 638, win 5, options [nop,nop,TS val 3014717048 ecr 1337624192], length 0
+23:58:22.813501 eth0  Out IP (tos 0x0, ttl 64, id 60534, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.55062 > ubuntu-mirror-3.ps6.canonical.com.80: Flags [.], cksum 0x634d (incorrect -> 0x09ba), seq 638, ack 884, win 501, options [nop,nop,TS val 1337624281 ecr 3014717048], length 0
+23:58:22.826622 eth0  In  IP (tos 0x48, ttl 44, id 31275, offset 0, flags [DF], proto TCP (6), length 52)
+    ubuntu-mirror-2.ps6.canonical.com.80 > d726997b6641.54814: Flags [F.], cksum 0x68bc (correct), seq 295, ack 218, win 5, options [nop,nop,TS val 4148356676 ecr 340708290], length 0
+23:58:22.826643 eth0  Out IP (tos 0x0, ttl 64, id 6863, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.54814 > ubuntu-mirror-2.ps6.canonical.com.80: Flags [.], cksum 0x634c (incorrect -> 0x6666), seq 218, ack 296, win 501, options [nop,nop,TS val 340708392 ecr 4148356676], length 0
+23:58:25.954836 lo    In  IP (tos 0x0, ttl 64, id 11847, offset 0, flags [DF], proto UDP (17), length 75)
+    localhost.59686 > localhost.59452: [bad udp cksum 0xfe54 -> 0x3169!] UDP, length 47
+23:58:25.955558 lo    In  IP (tos 0x0, ttl 64, id 24905, offset 0, flags [DF], proto UDP (17), length 171)
+    localhost.53 > localhost.59686: [bad udp cksum 0xfeb4 -> 0x62ee!] 44824 q: A? archive.ubuntu.com. 6/0/1 archive.ubuntu.com. [56s] A 185.125.190.81, archive.ubuntu.com. [56s] A 91.189.91.82, archive.ubuntu.com. [56s] A 185.125.190.82, archive.ubuntu.com. [56s] A 91.189.91.83, archive.ubuntu.com. [56s] A 91.189.91.81, archive.ubuntu.com. [56s] A 185.125.190.83 ar: . OPT UDPsize=65494 (143)
+23:58:25.955794 eth0  Out IP (tos 0x0, ttl 64, id 9784, offset 0, flags [DF], proto TCP (6), length 60)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [S], cksum 0x2414 (incorrect -> 0x2b02), seq 3889914749, win 64240, options [mss 1460,sackOK,TS val 3545245533 ecr 0,nop,wscale 7], length 0
+23:58:25.984992 lo    In  IP (tos 0x0, ttl 64, id 37535, offset 0, flags [DF], proto UDP (17), length 84)
+    localhost.48129 > localhost.59452: [bad udp cksum 0xfe5d -> 0xf4ad!] UDP, length 56
+23:58:26.188559 eth0  In  IP (tos 0x20, ttl 50, id 0, offset 0, flags [DF], proto TCP (6), length 60)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [S.], cksum 0xffb6 (correct), seq 652879677, ack 3889914750, win 65535, options [mss 1460,sackOK,TS val 2818912247 ecr 3545245533,nop,wscale 14], length 0
+23:58:26.188586 eth0  Out IP (tos 0x0, ttl 64, id 9785, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0x2bab), seq 1, ack 1, win 502, options [nop,nop,TS val 3545245766 ecr 2818912247], length 0
+23:58:26.188834 eth0  Out IP (tos 0x0, ttl 64, id 9786, offset 0, flags [DF], proto TCP (6), length 205)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [P.], cksum 0x24a5 (incorrect -> 0x3da3), seq 1:154, ack 1, win 502, options [nop,nop,TS val 3545245766 ecr 2818912247], length 153: HTTP, length: 153
+	GET /ubuntu/pool/main/libc/libcap2/libcap2-bin_2.66-5ubuntu2.2_amd64.deb HTTP/1.1
+	Host: archive.ubuntu.com
+	User-Agent: Debian APT-HTTP/1.3 (2.7.14)
+	
+23:58:26.215843 lo    In  IP (tos 0x0, ttl 64, id 25070, offset 0, flags [DF], proto UDP (17), length 131)
+    localhost.53 > localhost.48129: [bad udp cksum 0xfe8c -> 0x82a0!] 46465 q: PTR? 81.190.125.185.in-addr.arpa. 1/0/1 81.190.125.185.in-addr.arpa. [1h] PTR ubuntu-mirror-1.ps5.canonical.com. ar: . OPT UDPsize=65494 (103)
+23:58:26.353106 eth0  In  IP (tos 0x20, ttl 50, id 6837, offset 0, flags [DF], proto TCP (6), length 52)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [.], cksum 0x2c1b (correct), seq 1, ack 154, win 5, options [nop,nop,TS val 2818912479 ecr 3545245766], length 0
+23:58:26.355006 eth0  In  IP (tos 0x20, ttl 50, id 6838, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0xf22f), seq 1:2897, ack 154, win 5, options [nop,nop,TS val 2818912479 ecr 3545245766], length 2896: HTTP, length: 2896
+	HTTP/1.1 200 OK
+	Date: Thu, 17 Apr 2025 23:58:26 GMT
+	Server: Apache/2.4.52 (Ubuntu)
+	Last-Modified: Mon, 24 Feb 2025 13:31:39 GMT
+	ETag: "857a-62ee35c35f48f"
+	Accept-Ranges: bytes
+	Content-Length: 34170
+	Cache-Control: max-age=86400
+	Content-Type: application/vnd.debian.binary-package
+	
+	!<arch>
+	debian-binary   1740066597  0     0     100644  4         `
+	2.0
+	control.tar.zst 1740066597  0     0     100644  986       `
+23:58:26.355028 eth0  Out IP (tos 0x0, ttl 64, id 9787, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0x1e07), seq 154, ack 2897, win 546, options [nop,nop,TS val 3545245933 ecr 2818912479], length 0
+23:58:26.355009 eth0  In  IP (tos 0x20, ttl 50, id 6840, offset 0, flags [DF], proto TCP (6), length 1500)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [.], cksum 0x7fb0 (correct), seq 2897:4345, ack 154, win 5, options [nop,nop,TS val 2818912479 ecr 3545245766], length 1448: HTTP
+23:58:26.355034 eth0  Out IP (tos 0x0, ttl 64, id 9788, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0x1848), seq 154, ack 4345, win 569, options [nop,nop,TS val 3545245933 ecr 2818912479], length 0
+23:58:26.356160 eth0  In  IP (tos 0x20, ttl 50, id 6841, offset 0, flags [DF], proto TCP (6), length 1500)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x9a67 (correct), seq 4345:5793, ack 154, win 5, options [nop,nop,TS val 2818912479 ecr 3545245766], length 1448: HTTP
+23:58:26.356195 eth0  Out IP (tos 0x0, ttl 64, id 9789, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0x1288), seq 154, ack 5793, win 592, options [nop,nop,TS val 3545245934 ecr 2818912479], length 0
+23:58:26.356167 eth0  In  IP (tos 0x20, ttl 50, id 6842, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [.], cksum 0x2f5c (incorrect -> 0x0b0e), seq 5793:8689, ack 154, win 5, options [nop,nop,TS val 2818912479 ecr 3545245766], length 2896: HTTP
+23:58:26.356209 eth0  Out IP (tos 0x0, ttl 64, id 9790, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0x070b), seq 154, ack 8689, win 637, options [nop,nop,TS val 3545245934 ecr 2818912479], length 0
+23:58:26.357066 eth0  In  IP (tos 0x20, ttl 50, id 6844, offset 0, flags [DF], proto TCP (6), length 1500)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x88b9 (correct), seq 8689:10137, ack 154, win 5, options [nop,nop,TS val 2818912479 ecr 3545245766], length 1448: HTTP
+23:58:26.357112 eth0  Out IP (tos 0x0, ttl 64, id 9791, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0x014b), seq 154, ack 10137, win 660, options [nop,nop,TS val 3545245935 ecr 2818912479], length 0
+23:58:26.358247 eth0  In  IP (tos 0x20, ttl 50, id 6845, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0xd7d9), seq 10137:13033, ack 154, win 5, options [nop,nop,TS val 2818912479 ecr 3545245766], length 2896: HTTP
+23:58:26.358287 eth0  Out IP (tos 0x0, ttl 64, id 9792, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0xf5cf), seq 154, ack 13033, win 702, options [nop,nop,TS val 3545245936 ecr 2818912479], length 0
+23:58:26.358252 eth0  In  IP (tos 0x20, ttl 50, id 6847, offset 0, flags [DF], proto TCP (6), length 1500)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [.], cksum 0x5b93 (correct), seq 13033:14481, ack 154, win 5, options [nop,nop,TS val 2818912479 ecr 3545245766], length 1448: HTTP
+23:58:26.358300 eth0  Out IP (tos 0x0, ttl 64, id 9793, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0xf032), seq 154, ack 14481, win 691, options [nop,nop,TS val 3545245936 ecr 2818912479], length 0
+23:58:26.519651 eth0  In  IP (tos 0x20, ttl 50, id 6848, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0x64cf), seq 14481:17377, ack 154, win 5, options [nop,nop,TS val 2818912645 ecr 3545245933], length 2896: HTTP
+23:58:26.519681 eth0  Out IP (tos 0x0, ttl 64, id 9794, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0xe390), seq 154, ack 17377, win 702, options [nop,nop,TS val 3545246097 ecr 2818912645], length 0
+23:58:26.526752 eth0  In  IP (tos 0x20, ttl 50, id 6850, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0x8202), seq 17377:20273, ack 154, win 5, options [nop,nop,TS val 2818912653 ecr 3545245933], length 2896: HTTP
+23:58:26.526779 eth0  Out IP (tos 0x0, ttl 64, id 9795, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0xd831), seq 154, ack 20273, win 702, options [nop,nop,TS val 3545246104 ecr 2818912653], length 0
+23:58:26.543151 eth0  In  IP (tos 0x20, ttl 50, id 6852, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0xb0ec), seq 20273:23169, ack 154, win 5, options [nop,nop,TS val 2818912670 ecr 3545245933], length 2896: HTTP
+23:58:26.543172 eth0  Out IP (tos 0x0, ttl 64, id 9796, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0xccbf), seq 154, ack 23169, win 702, options [nop,nop,TS val 3545246121 ecr 2818912670], length 0
+23:58:26.559275 eth0  In  IP (tos 0x20, ttl 50, id 6854, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0x0429), seq 23169:26065, ack 154, win 5, options [nop,nop,TS val 2818912686 ecr 3545245936], length 2896: HTTP
+23:58:26.559296 eth0  Out IP (tos 0x0, ttl 64, id 9797, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0xc14f), seq 154, ack 26065, win 702, options [nop,nop,TS val 3545246137 ecr 2818912686], length 0
+23:58:26.571634 eth0  In  IP (tos 0x20, ttl 50, id 6856, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0xbf5f), seq 26065:28961, ack 154, win 5, options [nop,nop,TS val 2818912698 ecr 3545245936], length 2896: HTTP
+23:58:26.571655 eth0  Out IP (tos 0x0, ttl 64, id 9798, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0xb5e7), seq 154, ack 28961, win 702, options [nop,nop,TS val 3545246149 ecr 2818912698], length 0
+23:58:26.583391 eth0  In  IP (tos 0x20, ttl 50, id 6858, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0xad78), seq 28961:31857, ack 154, win 5, options [nop,nop,TS val 2818912710 ecr 3545245936], length 2896: HTTP
+23:58:26.583411 eth0  Out IP (tos 0x0, ttl 64, id 9799, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0xaa7f), seq 154, ack 31857, win 702, options [nop,nop,TS val 3545246161 ecr 2818912710], length 0
+23:58:26.595288 eth0  In  IP (tos 0x20, ttl 50, id 6860, offset 0, flags [DF], proto TCP (6), length 2656)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2e38 (incorrect -> 0x3e65), seq 31857:34461, ack 154, win 5, options [nop,nop,TS val 2818912722 ecr 3545245936], length 2604: HTTP
+23:58:26.595305 eth0  Out IP (tos 0x0, ttl 64, id 9800, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0xa03a), seq 154, ack 34461, win 703, options [nop,nop,TS val 3545246173 ecr 2818912722], length 0
+23:58:26.595970 eth0  Out IP (tos 0x0, ttl 64, id 9801, offset 0, flags [DF], proto TCP (6), length 356)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [P.], cksum 0x253c (incorrect -> 0x0733), seq 154:458, ack 34461, win 703, options [nop,nop,TS val 3545246174 ecr 2818912722], length 304: HTTP, length: 304
+	GET /ubuntu/pool/main/i/iputils/iputils-ping_20240117-1build1_amd64.deb HTTP/1.1
+	Host: archive.ubuntu.com
+	User-Agent: Debian APT-HTTP/1.3 (2.7.14)
+	
+	GET /ubuntu/pool/main/libc/libcap2/libpam-cap_2.66-5ubuntu2.2_amd64.deb HTTP/1.1
+	Host: archive.ubuntu.com
+	User-Agent: Debian APT-HTTP/1.3 (2.7.14)
+	
+23:58:26.803654 eth0  In  IP (tos 0x20, ttl 50, id 6862, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0x501e), seq 34461:37357, ack 458, win 5, options [nop,nop,TS val 2818912886 ecr 3545246174], length 2896: HTTP, length: 2896
+	HTTP/1.1 200 OK
+	Date: Thu, 17 Apr 2025 23:58:26 GMT
+	Server: Apache/2.4.52 (Ubuntu)
+	Last-Modified: Mon, 08 Apr 2024 17:03:22 GMT
+	ETag: "acde-61598c8772034"
+	Accept-Ranges: bytes
+	Content-Length: 44254
+	Cache-Control: max-age=86400
+	Content-Type: application/vnd.debian.binary-package
+	
+	!<arch>
+	debian-binary   1712592016  0     0     100644  4         `
+	2.0
+	control.tar.zst 1712592016  0     0     100644  932       `
+23:58:26.803657 eth0  In  IP (tos 0x20, ttl 50, id 6864, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0x87ab), seq 37357:40253, ack 458, win 5, options [nop,nop,TS val 2818912891 ecr 3545246174], length 2896: HTTP
+23:58:26.803660 eth0  In  IP (tos 0x20, ttl 50, id 6866, offset 0, flags [DF], proto TCP (6), length 1500)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [.], cksum 0xebfe (correct), seq 40253:41701, ack 458, win 5, options [nop,nop,TS val 2818912902 ecr 3545246174], length 1448: HTTP
+23:58:26.803662 eth0  In  IP (tos 0x20, ttl 50, id 6867, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0x04d4), seq 41701:44597, ack 458, win 5, options [nop,nop,TS val 2818912907 ecr 3545246174], length 2896: HTTP
+23:58:26.803708 eth0  In  IP (tos 0x20, ttl 50, id 6869, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0x8966), seq 44597:47493, ack 458, win 5, options [nop,nop,TS val 2818912917 ecr 3545246174], length 2896: HTTP
+23:58:26.803710 eth0  In  IP (tos 0x20, ttl 50, id 6871, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0xdc1d), seq 47493:50389, ack 458, win 5, options [nop,nop,TS val 2818912927 ecr 3545246174], length 2896: HTTP
+23:58:26.803731 eth0  Out IP (tos 0x0, ttl 64, id 9802, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0x75fe), seq 458, ack 44597, win 703, options [nop,nop,TS val 3545246381 ecr 2818912886], length 0
+23:58:26.803775 eth0  Out IP (tos 0x0, ttl 64, id 9803, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0x5ee4), seq 458, ack 50389, win 794, options [nop,nop,TS val 3545246381 ecr 2818912917], length 0
+23:58:26.810887 eth0  In  IP (tos 0x20, ttl 50, id 6873, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0xea59), seq 50389:53285, ack 458, win 5, options [nop,nop,TS val 2818912937 ecr 3545246174], length 2896: HTTP
+23:58:26.810921 eth0  Out IP (tos 0x0, ttl 64, id 9804, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0x534b), seq 458, ack 53285, win 839, options [nop,nop,TS val 3545246389 ecr 2818912937], length 0
+23:58:26.820759 eth0  In  IP (tos 0x20, ttl 50, id 6875, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0x95aa), seq 53285:56181, ack 458, win 5, options [nop,nop,TS val 2818912947 ecr 3545246174], length 2896: HTTP
+23:58:26.820793 eth0  Out IP (tos 0x0, ttl 64, id 9805, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0x47bb), seq 458, ack 56181, win 884, options [nop,nop,TS val 3545246398 ecr 2818912947], length 0
+23:58:26.830873 eth0  In  IP (tos 0x20, ttl 50, id 6877, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0x598c), seq 56181:59077, ack 458, win 5, options [nop,nop,TS val 2818912957 ecr 3545246174], length 2896: HTTP
+23:58:26.830896 eth0  Out IP (tos 0x0, ttl 64, id 9806, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0x3c28), seq 458, ack 59077, win 930, options [nop,nop,TS val 3545246409 ecr 2818912957], length 0
+23:58:26.841096 eth0  In  IP (tos 0x20, ttl 50, id 6879, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0xb51a), seq 59077:61973, ack 458, win 5, options [nop,nop,TS val 2818912968 ecr 3545246174], length 2896: HTTP
+23:58:26.841131 eth0  Out IP (tos 0x0, ttl 64, id 9807, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0x3096), seq 458, ack 61973, win 975, options [nop,nop,TS val 3545246419 ecr 2818912968], length 0
+23:58:26.851077 eth0  In  IP (tos 0x20, ttl 50, id 6881, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0xcdfb), seq 61973:64869, ack 458, win 5, options [nop,nop,TS val 2818912978 ecr 3545246174], length 2896: HTTP
+23:58:26.851111 eth0  Out IP (tos 0x0, ttl 64, id 9808, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0x2505), seq 458, ack 64869, win 1020, options [nop,nop,TS val 3545246429 ecr 2818912978], length 0
+23:58:26.861477 eth0  In  IP (tos 0x20, ttl 50, id 6883, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0x2cd0), seq 64869:67765, ack 458, win 5, options [nop,nop,TS val 2818912988 ecr 3545246174], length 2896: HTTP
+23:58:26.861500 eth0  Out IP (tos 0x0, ttl 64, id 9809, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0x1974), seq 458, ack 67765, win 1065, options [nop,nop,TS val 3545246439 ecr 2818912988], length 0
+23:58:26.871429 eth0  In  IP (tos 0x20, ttl 50, id 6885, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0x866d), seq 67765:70661, ack 458, win 5, options [nop,nop,TS val 2818912998 ecr 3545246174], length 2896: HTTP
+23:58:26.871451 eth0  Out IP (tos 0x0, ttl 64, id 9810, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0x0de2), seq 458, ack 70661, win 1111, options [nop,nop,TS val 3545246449 ecr 2818912998], length 0
+23:58:26.881574 eth0  In  IP (tos 0x20, ttl 50, id 6887, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0x6a04), seq 70661:73557, ack 458, win 5, options [nop,nop,TS val 2818913008 ecr 3545246174], length 2896: HTTP
+23:58:26.881597 eth0  Out IP (tos 0x0, ttl 64, id 9811, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0x0251), seq 458, ack 73557, win 1156, options [nop,nop,TS val 3545246459 ecr 2818913008], length 0
+23:58:26.892216 eth0  In  IP (tos 0x20, ttl 50, id 6889, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0x5992), seq 73557:76453, ack 458, win 5, options [nop,nop,TS val 2818913018 ecr 3545246174], length 2896: HTTP
+23:58:26.892241 eth0  Out IP (tos 0x0, ttl 64, id 9812, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0xf6be), seq 458, ack 76453, win 1201, options [nop,nop,TS val 3545246470 ecr 2818913018], length 0
+23:58:26.902042 eth0  In  IP (tos 0x20, ttl 50, id 6891, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0x2aac), seq 76453:79349, ack 458, win 5, options [nop,nop,TS val 2818913028 ecr 3545246174], length 2896: HTTP
+23:58:26.902065 eth0  Out IP (tos 0x0, ttl 64, id 9813, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0xeb2d), seq 458, ack 79349, win 1246, options [nop,nop,TS val 3545246480 ecr 2818913028], length 0
+23:58:26.912073 eth0  In  IP (tos 0x20, ttl 50, id 6893, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0x0987), seq 79349:82245, ack 458, win 5, options [nop,nop,TS val 2818913039 ecr 3545246174], length 2896: HTTP
+23:58:26.912095 eth0  Out IP (tos 0x0, ttl 64, id 9814, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0xdfaf), seq 458, ack 82245, win 1271, options [nop,nop,TS val 3545246490 ecr 2818913039], length 0
+23:58:26.965922 eth0  In  IP (tos 0x20, ttl 50, id 6895, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0x66d7), seq 82245:85141, ack 458, win 5, options [nop,nop,TS val 2818913093 ecr 3545246381], length 2896: HTTP
+23:58:26.965946 eth0  Out IP (tos 0x0, ttl 64, id 9815, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0xd3f3), seq 458, ack 85141, win 1271, options [nop,nop,TS val 3545246544 ecr 2818913093], length 0
+23:58:26.970879 eth0  In  IP (tos 0x20, ttl 50, id 6897, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0xde44), seq 85141:88037, ack 458, win 5, options [nop,nop,TS val 2818913098 ecr 3545246381], length 2896: HTTP
+23:58:26.970901 eth0  Out IP (tos 0x0, ttl 64, id 9816, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0xc899), seq 458, ack 88037, win 1271, options [nop,nop,TS val 3545246549 ecr 2818913098], length 0
+23:58:26.981169 eth0  In  IP (tos 0x20, ttl 50, id 6899, offset 0, flags [DF], proto TCP (6), length 2948)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x2f5c (incorrect -> 0x8e14), seq 88037:90933, ack 458, win 5, options [nop,nop,TS val 2818913108 ecr 3545246381], length 2896: HTTP
+23:58:26.981193 eth0  Out IP (tos 0x0, ttl 64, id 9817, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0xbd35), seq 458, ack 90933, win 1271, options [nop,nop,TS val 3545246559 ecr 2818913108], length 0
+23:58:26.990986 eth0  In  IP (tos 0x20, ttl 50, id 6901, offset 0, flags [DF], proto TCP (6), length 876)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [P.], cksum 0x3165 (correct), seq 90933:91757, ack 458, win 5, options [nop,nop,TS val 2818913118 ecr 3545246389], length 824: HTTP
+23:58:26.992303 eth0  Out IP (tos 0x0, ttl 64, id 9818, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [F.], cksum 0x240c (incorrect -> 0xb9d0), seq 458, ack 91757, win 1294, options [nop,nop,TS val 3545246570 ecr 2818913118], length 0
+23:58:27.156327 eth0  In  IP (tos 0x20, ttl 50, id 6902, offset 0, flags [DF], proto TCP (6), length 52)
+    ubuntu-mirror-1.ps5.canonical.com.80 > d726997b6641.47056: Flags [F.], cksum 0xbe33 (correct), seq 91757, ack 459, win 5, options [nop,nop,TS val 2818913283 ecr 3545246570], length 0
+23:58:27.156347 eth0  Out IP (tos 0x0, ttl 64, id 9819, offset 0, flags [DF], proto TCP (6), length 52)
+    d726997b6641.47056 > ubuntu-mirror-1.ps5.canonical.com.80: Flags [.], cksum 0x240c (incorrect -> 0xb886), seq 459, ack 91758, win 1294, options [nop,nop,TS val 3545246734 ecr 2818913283], length 0
+23:58:27.783918 eth0  In  ARP, Ethernet (len 6), IPv4 (len 4), Request who-has d726997b6641 tell pauloenrique-Latitude-E7450, length 28
+23:58:27.783948 eth0  Out ARP, Ethernet (len 6), IPv4 (len 4), Reply d726997b6641 is-at 1a:45:82:0a:08:44 (oui Unknown), length 28
+23:58:29.463445 eth0  Out IP (tos 0x0, ttl 64, id 47208, offset 0, flags [DF], proto ICMP (1), length 84)
+    d726997b6641 > dns.google: ICMP echo request, id 1, seq 1, length 64
+23:58:29.490889 eth0  In  IP (tos 0x80, ttl 114, id 0, offset 0, flags [none], proto ICMP (1), length 84)
+    dns.google > d726997b6641: ICMP echo reply, id 1, seq 1, length 64
+23:58:29.520084 lo    In  IP (tos 0x0, ttl 64, id 25770, offset 0, flags [DF], proto UDP (17), length 77)
+    localhost.49869 > localhost.59452: [bad udp cksum 0xfe56 -> 0x8c92!] UDP, length 49
+23:58:29.542023 lo    In  IP (tos 0x0, ttl 64, id 27988, offset 0, flags [DF], proto UDP (17), length 101)
+    localhost.53 > localhost.49869: [bad udp cksum 0xfe6e -> 0x340b!] 55167 q: PTR? 8.8.8.8.in-addr.arpa. 1/0/1 8.8.8.8.in-addr.arpa. [20h49m5s] PTR dns.google. ar: . OPT UDPsize=65494 (73)
+23:58:30.464889 eth0  Out IP (tos 0x0, ttl 64, id 47755, offset 0, flags [DF], proto ICMP (1), length 84)
+    d726997b6641 > dns.google: ICMP echo request, id 1, seq 2, length 64
+23:58:30.491817 eth0  In  IP (tos 0x80, ttl 114, id 0, offset 0, flags [none], proto ICMP (1), length 84)
+    dns.google > d726997b6641: ICMP echo reply, id 1, seq 2, length 64
+23:58:31.465982 eth0  Out IP (tos 0x0, ttl 64, id 47883, offset 0, flags [DF], proto ICMP (1), length 84)
+    d726997b6641 > dns.google: ICMP echo request, id 1, seq 3, length 64
+23:58:31.488365 eth0  In  IP (tos 0x80, ttl 114, id 0, offset 0, flags [none], proto ICMP (1), length 84)
+    dns.google > d726997b6641: ICMP echo reply, id 1, seq 3, length 64
+23:58:32.466916 eth0  Out IP (tos 0x0, ttl 64, id 48454, offset 0, flags [DF], proto ICMP (1), length 84)
+    d726997b6641 > dns.google: ICMP echo request, id 1, seq 4, length 64
+23:58:32.488411 eth0  In  IP (tos 0x80, ttl 114, id 0, offset 0, flags [none], proto ICMP (1), length 84)
+    dns.google > d726997b6641: ICMP echo reply, id 1, seq 4, length 64
+23:58:33.623591 eth0  B   IP (tos 0x0, ttl 64, id 28131, offset 0, flags [DF], proto UDP (17), length 72)
+    pauloenrique-Latitude-E7450.57621 > 172.19.255.255.57621: [bad udp cksum 0x586d -> 0x7eb4!] UDP, length 44
+23:59:00.978806 eth0  M   IP (tos 0x0, ttl 1, id 59809, offset 0, flags [DF], proto UDP (17), length 200)
+    pauloenrique-Latitude-E7450.37737 > 239.255.255.250.1900: [bad udp cksum 0x9cd4 -> 0x2961!] UDP, length 172
+23:59:00.989104 eth0  M   IP (tos 0x0, ttl 1, id 59820, offset 0, flags [DF], proto UDP (17), length 196)
+    pauloenrique-Latitude-E7450.36251 > 239.255.255.250.1900: [bad udp cksum 0x9cd0 -> 0xe2eb!] UDP, length 168
+23:59:01.979740 eth0  M   IP (tos 0x0, ttl 1, id 59990, offset 0, flags [DF], proto UDP (17), length 200)
+    pauloenrique-Latitude-E7450.37737 > 239.255.255.250.1900: [bad udp cksum 0x9cd4 -> 0x2961!] UDP, length 172
+23:59:01.990431 eth0  M   IP (tos 0x0, ttl 1, id 59995, offset 0, flags [DF], proto UDP (17), length 196)
+    pauloenrique-Latitude-E7450.36251 > 239.255.255.250.1900: [bad udp cksum 0x9cd0 -> 0xe2eb!] UDP, length 168
+23:59:02.980810 eth0  M   IP (tos 0x0, ttl 1, id 60687, offset 0, flags [DF], proto UDP (17), length 200)
+    pauloenrique-Latitude-E7450.37737 > 239.255.255.250.1900: [bad udp cksum 0x9cd4 -> 0x2961!] UDP, length 172
+23:59:02.990978 eth0  M   IP (tos 0x0, ttl 1, id 60691, offset 0, flags [DF], proto UDP (17), length 196)
+    pauloenrique-Latitude-E7450.36251 > 239.255.255.250.1900: [bad udp cksum 0x9cd0 -> 0xe2eb!] UDP, length 168
+23:59:03.632720 eth0  B   IP (tos 0x0, ttl 64, id 52301, offset 0, flags [DF], proto UDP (17), length 72)
+    pauloenrique-Latitude-E7450.57621 > 172.19.255.255.57621: [bad udp cksum 0x586d -> 0x7eb4!] UDP, length 44
+23:59:03.981469 eth0  M   IP (tos 0x0, ttl 1, id 61520, offset 0, flags [DF], proto UDP (17), length 200)
+    pauloenrique-Latitude-E7450.37737 > 239.255.255.250.1900: [bad udp cksum 0x9cd4 -> 0x2961!] UDP, length 172
+23:59:03.991738 eth0  M   IP (tos 0x0, ttl 1, id 61521, offset 0, flags [DF], proto UDP (17), length 196)
+    pauloenrique-Latitude-E7450.36251 > 239.255.255.250.1900: [bad udp cksum 0x9cd0 -> 0xe2eb!] UDP, length 168
+^C
+166 packets captured
+196 packets received by filter
+0 packets dropped by kernel
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ 
+pauloenrique@pauloenrique-Latitude-E7450:~/Documents/Development/Docker-labs/Lab10$ 
+

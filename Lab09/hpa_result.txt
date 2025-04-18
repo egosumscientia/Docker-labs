@@ -1,0 +1,12 @@
+Every 2.0s: kubectl get hpa,deployment,pods                                                                                        pauloenrique-Latitude-E7450: Thu Apr 17 10:42:39 2025
+
+NAME                                          REFERENCE                   TARGETS        MINPODS   MAXPODS   REPLICAS   AGE
+horizontalpodautoscaler.autoscaling/web-hpa   Deployment/web-deployment   cpu: 40%/50%   2         5         2          35m
+
+NAME                             READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/web-deployment   2/2     2            2           35m
+
+NAME                                  READY   STATUS    RESTARTS   AGE
+pod/load-test                         1/1     Running   0          53s
+pod/web-deployment-65bc998f4c-vwl57   1/1     Running   0          90s
+pod/web-deployment-65bc998f4c-wfp27   1/1     Running   0          92s
