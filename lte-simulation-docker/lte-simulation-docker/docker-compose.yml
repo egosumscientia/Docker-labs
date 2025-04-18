@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  hss:
+    image: open5gs/hss
+    container_name: hss
+    networks:
+      lte-net:
+        ipv4_address: 172.18.0.10
+    ports:
+      - "3868:3868"
+    volumes:
+      - ./config/hss:/etc/open5gs
+
+  mme:
+    image: open5gs/mme
+    container_name: mme
+    networks:
+      lte-net:
+        ipv4_address: 172.18.0.20
+    ports:
+      - "36412:36412"
+      - "3870:3870"
+    depends_on:
+      - hss
+    volumes:
+      - ./config/mme:/etc/open5gs
+
+  pgw:
+    image: open5gs/pgw
+    container_name: pgw
+    networks:
+      lte-net:
+        ipv4_address: 172.18.0.40
+    ports:
+      - "2152:2152"
+    volumes:
+      - ./config/pgw:/etc/open5gs

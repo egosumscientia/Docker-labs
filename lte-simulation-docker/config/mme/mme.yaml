@@ -1,0 +1,27 @@
+mme:
+  sbi:
+    addr: 172.18.0.20
+    port: 7777
+  s1ap:
+    addr: 172.18.0.20
+  gummei:
+    plmn_id:
+      mcc: 001
+      mnc: 01
+    mme_gid: 2
+    mme_code: 1
+  tai:
+    plmn_id:
+      mcc: 001
+      mnc: 01
+    tac: 12345
+  security:
+    integrity_order : [ EIA1, EIA2, EIA0 ]
+    ciphering_order : [ EEA1, EEA2, EEA0 ]
+  network_name:
+    full: Open5GS
+  guami:
+    plmn_id:
+      mcc: 001
+      mnc: 01
+    amf_id: cafe00

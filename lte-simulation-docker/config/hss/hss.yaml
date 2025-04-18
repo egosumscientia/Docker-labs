@@ -1,0 +1,17 @@
+hss:
+  sbi:
+    addr: 172.18.0.10
+    port: 7777
+  diameter:
+    addr: hss.localdomain
+    realm: localdomain
+    no_tcp: false
+    no_sctp: true
+    listen_on: 172.18.0.10
+    port: 3868
+
+subscribers:
+  - imsi: 001010123456789
+    key: 465B5CE8B199B49FAA5F0A2EE238A6BC
+    opc: E8ED289DEBA952E4283B54E88E6183CA
+    apn: internet

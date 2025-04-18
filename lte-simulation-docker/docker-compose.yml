@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  hss:
+    image: gradiant/open5gs:2.7.5
+    container_name: hss
+    networks:
+      lte-net:
+        ipv4_address: 172.18.0.10
+    ports:
+      - "3868:3868"
+    volumes:
+      - ./config/hss:/etc/open5gs"
+    command: open5gs-hssd
+
+  mme:
+    image: gradiant/open5gs:2.7.5
+    container_name: mme
+    networks:
+      lte-net:
+        ipv4_address: 172.18.0.20
+    ports:
+      - "36412:36412"
+      - "3870:3870"
+    depends_on:
+      - hss
+    volumes:
+      - ./config/mme:/etc/open5gs"
+    command: open5gs-mmed
+
+  pgw:
+    image: gradiant/open5gs:2.7.5
+    container_name: pgw
+    networks:
+      lte-net:
+        ipv4_address: 172.18.0.40
+    ports:
+      - "2152:2152"
+    volumes:
+      - ./config/pgw:/etc/open5gs"
+    command: open5gs-pgwd
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    networks:
+      lte-net:
+        ipv4_address: 172.18.0.50
+    ports:
+      - "27017:27017"
+
+
+networks:
+  lte-net:
+    external: true
